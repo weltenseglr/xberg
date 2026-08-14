@@ -686,7 +686,7 @@ main() {
       echo "Usage: $0 [OPTIONS]"
       echo ""
       echo "Options:"
-      echo "  --variant VARIANT       Test specific variant (core, full, or all) [default: all]"
+      echo "  --variant VARIANT       Test specific variant (core, full, omni, or all) [default: all]"
       echo "  --image IMAGE          Use pre-built image instead of building [default: build from Dockerfile]"
       echo "  --verbose              Enable verbose output"
       echo "  --keep-containers      Don't cleanup containers after tests"
@@ -720,12 +720,16 @@ main() {
   full)
     run_test_suite "full"
     ;;
+  omni)
+    run_test_suite "omni"
+    ;;
   all)
     run_test_suite "core"
     run_test_suite "full"
+    run_test_suite "omni"
     ;;
   *)
-    log_error "Invalid variant: $TEST_VARIANT (must be 'core', 'full', or 'all')"
+    log_error "Invalid variant: $TEST_VARIANT (must be 'core', 'full', 'omni', or 'all')"
     exit 1
     ;;
   esac
