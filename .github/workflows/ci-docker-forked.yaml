@@ -72,6 +72,9 @@ jobs:
       - name: Make fetched fixtures readable inside the container
         run: chmod -R a+rX test_documents
 
+      - name: Generate bindings with alef
+        run: task alef:generate || echo "alef not available, skipping binding generation"
+
       - name: Free disk space
         uses: xberg-io/actions/free-disk-space-linux@v1
 
