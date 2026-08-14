@@ -1,5 +1,5 @@
 [workspace]
-alef_version = "0.60.1"
+alef_version = "0.60.2"
 # -D warnings (emitted into every generated Rust binding as #![allow(...)]).
 extra_clippy_allows = ["redundant_field_names"]
 languages = [
@@ -73,24 +73,73 @@ outputs = [".codex/skills", ".agents/skills", ".github/skills", ".claude/skills"
 [workspace.docs.snippets]
 dirs = ["docs-site/src/snippets", "docs-site/src/snippets-generated"]
 validation_level = "compile"
-timeout_secs = 600
+# 600s was sized for typecheck/compile-only validation of individual snippets.
+# It is also the ceiling for every session `before` hook (single global
+# knob, no per-session override -- see alef's SnippetSession/RunnerConfig).
+# The new swift `before` hook below runs `cargo build -p xberg-swift`, which
+# compiles xberg's heavy native dependency chain (onnxruntime, tesseract,
+# PDF/office parsers) from a cold target dir; a from-scratch build of that
+# graph routinely exceeds 10 minutes even before swift-bridge/staticlib
+# linking. Raised to bound that cold build without starving it. ~keep
+timeout_secs = 1800
 strict = true
 report_output = ".alef/snippet-validation-report.json"
 
 [workspace.docs.snippets.sessions.rust]
 cwd = "."
 manifest = "crates/xberg/Cargo.toml"
-rust_features = ["api"]
+# Beyond `api`, these three are the features hand-authored snippets actually
+# demonstrate. All are cheap: `keywords-yake` resolves to `stopwords`, which is
+# an empty feature list (Cargo.toml:516,507), and `embedding-presets` is `[]`
+# outright (:463) -- together they add ZERO crates. `pdf` (:61) pulls only
+# pure-Rust parsers.
+# Do NOT reach for `embeddings` (:466) to fix an embedding snippet: it enables
+# `onnx-runtime` (:452) -> `dep:ort` + `ort-bundled`, which DOWNLOADS ONNX
+# Runtime binaries at build time. `embedding-presets` clears the same
+# unresolved-import error for free. ~keep
+rust_features = ["api", "keywords-yake", "embedding-presets", "pdf"]
+# `async-trait` is not optional garnish here: every plugin trait in the public
+# surface (DocumentExtractor, OcrBackend, PostProcessor, Validator) is declared
+# with `#[async_trait]`, so a snippet that implements one CANNOT be written
+# without it. xberg itself depends on it (crates/xberg/Cargo.toml:1116); it was
+# simply never mirrored into the snippet session, which is why eight
+# hand-authored plugin snippets failed on `unresolved import async_trait`
+# rather than on anything wrong with their own code. Kept at the workspace
+# version (Cargo.toml:51). ~keep
 rust_dependencies = { tokio = { version = "1.53.1", features = [
   "macros",
   "rt-multi-thread",
-] }, serde_json = { version = "1.0.151" } }
+] }, serde_json = { version = "1.0.151" }, async-trait = { version = "0.1.92" } }
 
 [workspace.docs.snippets.sessions.python]
 cwd = "packages/python"
 manifest = "packages/python/pyproject.toml"
 
 [workspace.docs.snippets.sessions.node]
+cwd = "crates/xberg-node"
+manifest = "crates/xberg-node/package.json"
+
+# Sessions are keyed by BINDING-PACKAGE name, but alef's session lookup falls
+# back to the snippet's LANGUAGE name when a snippet carries no explicit
+# `target` metadata. TypeScript is the one language where those two names never
+# coincide: its packages are `node` and `wasm`, so `sessions.get("typescript")`
+# missed and the 48 hand-authored snippets under docs-site/src/snippets/
+# typescript/ were typechecked against a bare tsconfig with no path mapping to
+# `@xberg-io/xberg` -- 64 of their 69 failures were a single TS2307
+# "cannot find module". Generated snippets are unaffected either way: they
+# carry `target: node`/`target: wasm`, which takes priority over this fallback.
+# Aliased to the node package because every hand-authored TS snippet under
+# docs-site/src/snippets/typescript/ imports `@xberg-io/xberg`.
+# KNOWN GAP, measured 2026-08-14: that alias is wrong for the 15 hand-authored
+# snippets under docs-site/src/snippets/wasm/ (9 .md + 6 .ts), which DO import
+# `@xberg-io/xberg-wasm` and therefore fail this session with 18 x TS2307
+# "cannot find module". An earlier revision of this comment asserted that none
+# of them existed; it only surveyed the typescript/ directory.
+# They cannot be routed the generated tree's way either: `target:` lives in
+# markdown frontmatter, 0 of the 419 hand-authored snippets carry frontmatter at
+# all, and 6 of these 15 are raw `.ts` files that cannot carry any. Selecting a
+# session per directory is the missing capability; raised upstream. ~keep
+[workspace.docs.snippets.sessions.typescript]
 cwd = "crates/xberg-node"
 manifest = "crates/xberg-node/package.json"
 
@@ -118,7 +167,7 @@ manifest = "packages/elixir/mix.exs"
 cwd = "packages/java"
 manifest = "packages/java/pom.xml"
 before = [
-  "if [ -x /usr/libexec/java_home ]; then JAVA_HOME=$(/usr/libexec/java_home -v 25); else JAVA_HOME=$(java -XshowSettings:properties -version 2>&1 | sed -n 's/ *java.home = //p'); fi; export JAVA_HOME; if [ ! -d target/classes ]; then mvn -q -Dcheckstyle.skip -DskipTests compile; fi; mvn -q -DskipTests dependency:copy-dependencies",
+  "if [ -x /usr/libexec/java_home ]; then JAVA_HOME=$(/usr/libexec/java_home -v 25); else JAVA_HOME=$(java -XshowSettings:properties -version 2>&1 | sed -n 's/ *java.home = //p'); fi; export JAVA_HOME; if [ ! -d target/classes ]; then mvn -q -Dcheckstyle.skip -DskipTests compile; fi && mvn -q -DskipTests dependency:copy-dependencies",
 ]
 
 [workspace.docs.snippets.sessions.csharp]
@@ -132,25 +181,101 @@ manifest = "packages/dart/pubspec.yaml"
 [workspace.docs.snippets.sessions.kotlin]
 cwd = "packages/kotlin-android"
 manifest = "packages/kotlin-android/build.gradle.kts"
+# Guarded so a machine with no Android SDK SKIPS this build instead of failing it.
+# The previous form derived ANDROID_HOME inline from `readlink $(command -v
+# sdkmanager)`; with sdkmanager absent that passes no argument to readlink, the
+# four nested dirnames each print "usage: dirname string [...]", ANDROID_HOME
+# ends up empty, and gradle aborts. That matters more than it looks: a `before`
+# hook failure aborts the ENTIRE configured snippet check, so every other
+# language goes unvalidated because Android tooling happens to be missing.
+# Second guard, for the same reason: gradle-wrapper.jar is gitignored (.gitignore
+# `*.jar`), so it is absent from every staged-tree copy a pre-commit hook builds.
+# Without this check `./gradlew` dies with ClassNotFoundException on
+# GradleWrapperMain and takes the whole snippet run down with it, on every
+# commit, no matter what the commit touches.
+# Third guard, the same reasoning taken one step further: a gradle build that
+# runs and FAILS must not abort the run either. Swift already works this way
+# (its trailing `; true` is load-bearing, for exactly this reason). A real
+# Kotlin compile error should leave Kotlin's own snippets failing typecheck --
+# the io.xberg classes simply will not exist -- rather than leave the other
+# sixteen languages unmeasured. Kotlin's reported count is then artifact
+# absence, NOT snippet quality, and must not be read as the latter. ~keep
 before = [
-  "ANDROID_HOME=$(dirname $(dirname $(dirname $(dirname $(readlink $(command -v sdkmanager)))))) ./gradlew assembleDebug",
+  'sdk=$(command -v sdkmanager || true); if [ -z "${ANDROID_HOME:-}" ] && [ -n "$sdk" ]; then ANDROID_HOME=$(cd "$(dirname "$sdk")/../../.." && pwd); export ANDROID_HOME; fi; if [ -z "${ANDROID_HOME:-}" ]; then echo "alef: no Android SDK (ANDROID_HOME unset, sdkmanager not on PATH); skipping gradle assembleDebug"; elif [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then echo "alef: gradle/wrapper/gradle-wrapper.jar is absent; skipping gradle assembleDebug"; else ./gradlew assembleDebug || echo "alef: gradle assembleDebug FAILED; Kotlin snippets will fail typecheck (the io.xberg classes will be absent) instead of zeroing every other language"; fi',
 ]
 
 [workspace.docs.snippets.sessions.kotlin_android]
 cwd = "packages/kotlin-android"
 manifest = "packages/kotlin-android/build.gradle.kts"
+# Guarded so a machine with no Android SDK SKIPS this build instead of failing it.
+# The previous form derived ANDROID_HOME inline from `readlink $(command -v
+# sdkmanager)`; with sdkmanager absent that passes no argument to readlink, the
+# four nested dirnames each print "usage: dirname string [...]", ANDROID_HOME
+# ends up empty, and gradle aborts. That matters more than it looks: a `before`
+# hook failure aborts the ENTIRE configured snippet check, so every other
+# language goes unvalidated because Android tooling happens to be missing.
+# Second guard, for the same reason: gradle-wrapper.jar is gitignored (.gitignore
+# `*.jar`), so it is absent from every staged-tree copy a pre-commit hook builds.
+# Without this check `./gradlew` dies with ClassNotFoundException on
+# GradleWrapperMain and takes the whole snippet run down with it, on every
+# commit, no matter what the commit touches.
+# Third guard, the same reasoning taken one step further: a gradle build that
+# runs and FAILS must not abort the run either. Swift already works this way
+# (its trailing `; true` is load-bearing, for exactly this reason). A real
+# Kotlin compile error should leave Kotlin's own snippets failing typecheck --
+# the io.xberg classes simply will not exist -- rather than leave the other
+# sixteen languages unmeasured. Kotlin's reported count is then artifact
+# absence, NOT snippet quality, and must not be read as the latter. ~keep
 before = [
-  "ANDROID_HOME=$(dirname $(dirname $(dirname $(dirname $(readlink $(command -v sdkmanager)))))) ./gradlew assembleDebug",
+  'sdk=$(command -v sdkmanager || true); if [ -z "${ANDROID_HOME:-}" ] && [ -n "$sdk" ]; then ANDROID_HOME=$(cd "$(dirname "$sdk")/../../.." && pwd); export ANDROID_HOME; fi; if [ -z "${ANDROID_HOME:-}" ]; then echo "alef: no Android SDK (ANDROID_HOME unset, sdkmanager not on PATH); skipping gradle assembleDebug"; elif [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then echo "alef: gradle/wrapper/gradle-wrapper.jar is absent; skipping gradle assembleDebug"; else ./gradlew assembleDebug || echo "alef: gradle assembleDebug FAILED; Kotlin snippets will fail typecheck (the io.xberg classes will be absent) instead of zeroing every other language"; fi',
 ]
 
 [workspace.docs.snippets.sessions.swift]
 cwd = "packages/swift"
 manifest = "packages/swift/Package.swift"
+# Guarded so a machine with no Swift toolchain SKIPS the build instead of
+# failing it -- same reasoning as the Android guard above: a `before` hook
+# failure aborts the ENTIRE configured snippet check, so every other language
+# goes unvalidated because Swift tooling happens to be missing (xberg task
+# #521: all 95 Swift snippets failed because this session had no build step
+# at all and `import Xberg` could never resolve).
+# packages/swift/Sources/RustBridge{,C} are already-generated, committed
+# swift-bridge output (see Package.swift's own header comment) -- `alef
+# generate` does not need to run here. What's missing is the Rust side:
+# Package.swift's `resolvedStaticLib` links target/{release,debug}/lib
+# xberg_swift.a and libxberg_ffi.a explicitly, and neither exists until
+# `cargo build -p xberg-swift` has run at least once. Skip that build when
+# it is already satisfied (release preferred, matching resolvedStaticLib's
+# own preference) so repeat runs stay fast. If the build itself fails,
+# report it and move on instead of letting the `before` hook fail: a Swift
+# build failure should leave Swift's snippets failing typecheck (the
+# `Xberg` module still won't exist), not silently zero the other 14
+# languages. The trailing `; true` is load-bearing: with no `set -e`, a
+# `sh -c` one-liner's exit status is that of its LAST command, and an
+# `if/elif/.../fi` with no matching branch inherits the exit status of the
+# last condition it tested -- without `; true`, a chain that ends by
+# skipping every branch (e.g. no swift on PATH) could still exit non-zero
+# and take the whole snippet run down, exactly the failure mode this guard
+# exists to prevent. ~keep
+before = [
+  'if ! command -v swift >/dev/null 2>&1; then echo "alef: swift not on PATH; skipping cargo build (Swift snippets will fail typecheck)"; elif [ -f ../../target/release/libxberg_swift.a ] && [ -f ../../target/release/libxberg_ffi.a ]; then echo "alef: release staticlibs already built; skipping cargo build"; elif [ -f ../../target/debug/libxberg_swift.a ] && [ -f ../../target/debug/libxberg_ffi.a ]; then echo "alef: debug staticlibs already built; skipping cargo build"; else cargo build --manifest-path rust/Cargo.toml -p xberg-swift -p xberg-ffi || echo "alef: cargo build -p xberg-swift -p xberg-ffi failed; Swift snippets will fail typecheck (Xberg module unavailable), other languages unaffected"; fi; true',
+]
 
 [workspace.docs.snippets.sessions.zig]
 cwd = "packages/zig"
 manifest = "packages/zig/build.zig"
-env = { ZIG_GLOBAL_CACHE_DIR = ".alef-cache/zig-global" }
+# No ZIG_GLOBAL_CACHE_DIR override here on purpose. We used to set it to the
+# RELATIVE path ".alef-cache/zig-global", which zig could not resolve from the
+# session cwd -- every Zig snippet failed with "unable to resolve zig cache
+# directory: AppDataDirUnavailable" before it ever reached the compiler, masking
+# any real error underneath. alef already exports a per-fingerprint ABSOLUTE
+# cache dir of its own, so overriding it bought nothing and additionally
+# collapsed every Zig session onto one shared cache. ~keep
+# packages/zig/src/xberg.zig:4 does `@cImport(@cInclude("xberg.h"))`, and alef
+# compiles that module with a bare `zig build-exe` that never reads build.zig --
+# so build.zig's addIncludePath does not apply and the header must be supplied
+# here instead. ~keep
+include_paths = ["crates/xberg-ffi/include"]
 
 [workspace.docs.snippets.sessions.c]
 cwd = "crates/xberg-ffi/include"
@@ -185,6 +310,13 @@ exclude = [
   "**/*.diff",
   "**/*.patch",
   "**/frb_generated.rs",
+  # The Dart half of the same flutter_rust_bridge output. Only the Rust half was
+  # excluded, so `poly fmt --check .` reports `would reformat` on all four Dart
+  # bridge files (frb_generated{,.io,.web}.dart and lib.dart) and fails the
+  # Validate (poly) job on every run. Reproduced against poly 0.20.1 locally and
+  # 0.19.7 in CI. Same reasoning as the sibling `**/*.freezed.dart` exclusion
+  # poly already applies: this is generator output nothing should reflow. ~keep
+  "packages/dart/lib/src/xberg_bridge_generated/**",
   "charts/**",
   # ai-rulez-generated coding-agent plugin outputs: owned by `ai-rulez generate
   # --plugin`, never reformatted by poly (would break BLAKE3 provenance). Sources
@@ -204,6 +336,14 @@ exclude = [
   ".claude-plugin/marketplace.json",
   ".agents/plugins/marketplace.json",
   ".ai-rulez-generated.json",
+  # Benchmark cohort manifests are BLAKE3-pinned by value in
+  # tools/benchmark-harness/src/bench_matrix.rs (*_MANIFEST_BLAKE3) and verified
+  # at runtime by validate_artifacts. Any reformat changes the digest and fails
+  # the contract, so these are data files poly must not rewrite -- same reasoning
+  # as the ai-rulez plugin outputs above. Without this, every regen that runs
+  # poly silently re-breaks the pin: it collapsed the `fixtures` array onto one
+  # line in 888023d75d, and 8a60458a7dd was an earlier re-pin for the same cause. ~keep
+  "tools/benchmark-harness/cohorts/**",
 ]
 
 # Opt-in comment-removal sweep. Preserve doc comments (rustdoc is required on

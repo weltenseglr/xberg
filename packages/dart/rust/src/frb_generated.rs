@@ -8281,7 +8281,10 @@ fn wire__crate__map_url_impl(
         },
     )
 }
-#[cfg(any(any(feature = "late-interaction-presets", feature = "late-interaction"),feature = "late-interaction-presets"))]
+#[cfg(any(
+    any(feature = "late-interaction-presets", feature = "late-interaction"),
+    feature = "late-interaction-presets"
+))]
 fn wire__crate__max_sim_rank_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -8311,7 +8314,10 @@ fn wire__crate__max_sim_rank_impl(
         },
     )
 }
-#[cfg(any(any(feature = "late-interaction-presets", feature = "late-interaction"),feature = "late-interaction-presets"))]
+#[cfg(any(
+    any(feature = "late-interaction-presets", feature = "late-interaction"),
+    feature = "late-interaction-presets"
+))]
 fn wire__crate__max_sim_score_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -21692,9 +21698,15 @@ fn pde_ffi_dispatcher_primary_impl(
         278 => wire__crate__list_validators_impl(port, ptr, rust_vec_len, data_len),
         #[cfg(feature = "url-ingestion")]
         279 => wire__crate__map_url_impl(port, ptr, rust_vec_len, data_len),
-        #[cfg(any(any(feature = "late-interaction-presets", feature = "late-interaction"),feature = "late-interaction-presets"))]
+        #[cfg(any(
+            any(feature = "late-interaction-presets", feature = "late-interaction"),
+            feature = "late-interaction-presets"
+        ))]
         280 => wire__crate__max_sim_rank_impl(port, ptr, rust_vec_len, data_len),
-        #[cfg(any(any(feature = "late-interaction-presets", feature = "late-interaction"),feature = "late-interaction-presets"))]
+        #[cfg(any(
+            any(feature = "late-interaction-presets", feature = "late-interaction"),
+            feature = "late-interaction-presets"
+        ))]
         281 => wire__crate__max_sim_score_impl(port, ptr, rust_vec_len, data_len),
         282 => wire__crate__register_document_extractor_impl(port, ptr, rust_vec_len, data_len),
         283 => wire__crate__register_embedding_backend_impl(port, ptr, rust_vec_len, data_len),

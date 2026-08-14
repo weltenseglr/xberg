@@ -4665,30 +4665,14 @@ mod ffi {
     }
 
     extern "Rust" {
-        #[swift_bridge(swift_name = "chunkClassificationConfigFromJson")]
-        fn chunk_classification_config_from_json(json: String) -> Result<ChunkClassificationConfig, String>;
-        #[swift_bridge(swift_name = "extractionConfigFromJson")]
-        fn extraction_config_from_json(json: String) -> Result<ExtractionConfig, String>;
-        #[swift_bridge(swift_name = "extractInputFromJson")]
-        fn extract_input_from_json(json: String) -> Result<ExtractInput, String>;
-        #[swift_bridge(swift_name = "urlExtractionConfigFromJson")]
-        fn url_extraction_config_from_json(json: String) -> Result<UrlExtractionConfig, String>;
-        #[swift_bridge(swift_name = "ocrConfigFromJson")]
-        fn ocr_config_from_json(json: String) -> Result<OcrConfig, String>;
-        #[swift_bridge(swift_name = "extractedDocumentFromJson")]
-        fn extracted_document_from_json(json: String) -> Result<ExtractedDocument, String>;
-        #[swift_bridge(swift_name = "multiVectorEmbeddingFromJson")]
-        fn multi_vector_embedding_from_json(json: String) -> Result<MultiVectorEmbedding, String>;
-    }
-    extern "Rust" {
-        #[swift_bridge(swift_name = "cacheStatsFromJson")]
-        fn cache_stats_from_json(json: String) -> Result<CacheStats, String>;
         #[swift_bridge(swift_name = "accelerationConfigFromJson")]
         fn acceleration_config_from_json(json: String) -> Result<AccelerationConfig, String>;
         #[swift_bridge(swift_name = "captioningConfigFromJson")]
         fn captioning_config_from_json(json: String) -> Result<CaptioningConfig, String>;
         #[swift_bridge(swift_name = "chunkClassificationDefinitionFromJson")]
         fn chunk_classification_definition_from_json(json: String) -> Result<ChunkClassificationDefinition, String>;
+        #[swift_bridge(swift_name = "chunkClassificationConfigFromJson")]
+        fn chunk_classification_config_from_json(json: String) -> Result<ChunkClassificationConfig, String>;
         #[swift_bridge(swift_name = "pageClassificationConfigFromJson")]
         fn page_classification_config_from_json(json: String) -> Result<PageClassificationConfig, String>;
         #[swift_bridge(swift_name = "contentFilterConfigFromJson")]
@@ -4697,16 +4681,22 @@ mod ffi {
         fn csv_config_from_json(json: String) -> Result<CsvConfig, String>;
         #[swift_bridge(swift_name = "emailConfigFromJson")]
         fn email_config_from_json(json: String) -> Result<EmailConfig, String>;
+        #[swift_bridge(swift_name = "extractionConfigFromJson")]
+        fn extraction_config_from_json(json: String) -> Result<ExtractionConfig, String>;
         #[swift_bridge(swift_name = "fileExtractionConfigFromJson")]
         fn file_extraction_config_from_json(json: String) -> Result<FileExtractionConfig, String>;
         #[swift_bridge(swift_name = "svgOptionsFromJson")]
         fn svg_options_from_json(json: String) -> Result<SvgOptions, String>;
+        #[swift_bridge(swift_name = "extractInputFromJson")]
+        fn extract_input_from_json(json: String) -> Result<ExtractInput, String>;
         #[swift_bridge(swift_name = "extractionErrorItemFromJson")]
         fn extraction_error_item_from_json(json: String) -> Result<ExtractionErrorItem, String>;
         #[swift_bridge(swift_name = "extractionSummaryFromJson")]
         fn extraction_summary_from_json(json: String) -> Result<ExtractionSummary, String>;
         #[swift_bridge(swift_name = "extractionResultFromJson")]
         fn extraction_result_from_json(json: String) -> Result<ExtractionResult, String>;
+        #[swift_bridge(swift_name = "urlExtractionConfigFromJson")]
+        fn url_extraction_config_from_json(json: String) -> Result<UrlExtractionConfig, String>;
         #[swift_bridge(swift_name = "imageExtractionConfigFromJson")]
         fn image_extraction_config_from_json(json: String) -> Result<ImageExtractionConfig, String>;
         #[swift_bridge(swift_name = "tokenReductionOptionsFromJson")]
@@ -4741,6 +4731,8 @@ mod ffi {
         fn ocr_pipeline_stage_from_json(json: String) -> Result<OcrPipelineStage, String>;
         #[swift_bridge(swift_name = "ocrPipelineConfigFromJson")]
         fn ocr_pipeline_config_from_json(json: String) -> Result<OcrPipelineConfig, String>;
+        #[swift_bridge(swift_name = "ocrConfigFromJson")]
+        fn ocr_config_from_json(json: String) -> Result<OcrConfig, String>;
         #[swift_bridge(swift_name = "pageConfigFromJson")]
         fn page_config_from_json(json: String) -> Result<PageConfig, String>;
         #[swift_bridge(swift_name = "pdfConfigFromJson")]
@@ -4759,8 +4751,6 @@ mod ffi {
         fn redaction_term_from_json(json: String) -> Result<RedactionTerm, String>;
         #[swift_bridge(swift_name = "redactionPatternFromJson")]
         fn redaction_pattern_from_json(json: String) -> Result<RedactionPattern, String>;
-        #[swift_bridge(swift_name = "rerankerConfigFromJson")]
-        fn reranker_config_from_json(json: String) -> Result<RerankerConfig, String>;
         #[swift_bridge(swift_name = "sparseEmbeddingConfigFromJson")]
         fn sparse_embedding_config_from_json(json: String) -> Result<SparseEmbeddingConfig, String>;
         #[swift_bridge(swift_name = "summarizationConfigFromJson")]
@@ -4775,32 +4765,14 @@ mod ffi {
         fn tree_sitter_process_config_from_json(json: String) -> Result<TreeSitterProcessConfig, String>;
         #[swift_bridge(swift_name = "supportedFormatFromJson")]
         fn supported_format_from_json(json: String) -> Result<SupportedFormat, String>;
-        #[swift_bridge(swift_name = "serverConfigFromJson")]
-        fn server_config_from_json(json: String) -> Result<ServerConfig, String>;
-        #[swift_bridge(swift_name = "structuredDataResultFromJson")]
-        fn structured_data_result_from_json(json: String) -> Result<StructuredDataResult, String>;
         #[swift_bridge(swift_name = "docxAppPropertiesFromJson")]
         fn docx_app_properties_from_json(json: String) -> Result<DocxAppProperties, String>;
-        #[swift_bridge(swift_name = "xlsxAppPropertiesFromJson")]
-        fn xlsx_app_properties_from_json(json: String) -> Result<XlsxAppProperties, String>;
-        #[swift_bridge(swift_name = "pptxAppPropertiesFromJson")]
-        fn pptx_app_properties_from_json(json: String) -> Result<PptxAppProperties, String>;
         #[swift_bridge(swift_name = "corePropertiesFromJson")]
         fn core_properties_from_json(json: String) -> Result<CoreProperties, String>;
         #[swift_bridge(swift_name = "securityLimitsFromJson")]
         fn security_limits_from_json(json: String) -> Result<SecurityLimits, String>;
-        #[swift_bridge(swift_name = "tokenReductionConfigFromJson")]
-        fn token_reduction_config_from_json(json: String) -> Result<TokenReductionConfig, String>;
-        #[swift_bridge(swift_name = "patternMatchFromJson")]
-        fn pattern_match_from_json(json: String) -> Result<PatternMatch, String>;
         #[swift_bridge(swift_name = "footnoteConfigFromJson")]
         fn footnote_config_from_json(json: String) -> Result<FootnoteConfig, String>;
-        #[swift_bridge(swift_name = "footnoteAnchorFromJson")]
-        fn footnote_anchor_from_json(json: String) -> Result<FootnoteAnchor, String>;
-        #[swift_bridge(swift_name = "footnoteDefinitionFromJson")]
-        fn footnote_definition_from_json(json: String) -> Result<FootnoteDefinition, String>;
-        #[swift_bridge(swift_name = "citationFromJson")]
-        fn citation_from_json(json: String) -> Result<Citation, String>;
         #[swift_bridge(swift_name = "pdfAnnotationFromJson")]
         fn pdf_annotation_from_json(json: String) -> Result<PdfAnnotation, String>;
         #[swift_bridge(swift_name = "pageClassificationFromJson")]
@@ -4825,8 +4797,6 @@ mod ffi {
         fn document_relationship_from_json(json: String) -> Result<DocumentRelationship, String>;
         #[swift_bridge(swift_name = "documentNodeFromJson")]
         fn document_node_from_json(json: String) -> Result<DocumentNode, String>;
-        #[swift_bridge(swift_name = "tableGridFromJson")]
-        fn table_grid_from_json(json: String) -> Result<TableGrid, String>;
         #[swift_bridge(swift_name = "gridCellFromJson")]
         fn grid_cell_from_json(json: String) -> Result<GridCell, String>;
         #[swift_bridge(swift_name = "textAnnotationFromJson")]
@@ -4837,6 +4807,8 @@ mod ffi {
         fn document_counts_from_json(json: String) -> Result<DocumentCounts, String>;
         #[swift_bridge(swift_name = "languageConfidenceFromJson")]
         fn language_confidence_from_json(json: String) -> Result<LanguageConfidence, String>;
+        #[swift_bridge(swift_name = "extractedDocumentFromJson")]
+        fn extracted_document_from_json(json: String) -> Result<ExtractedDocument, String>;
         #[swift_bridge(swift_name = "archiveEntryFromJson")]
         fn archive_entry_from_json(json: String) -> Result<ArchiveEntry, String>;
         #[swift_bridge(swift_name = "processingWarningFromJson")]
@@ -4863,22 +4835,10 @@ mod ffi {
         fn element_from_json(json: String) -> Result<Element, String>;
         #[swift_bridge(swift_name = "pdfFormFieldFromJson")]
         fn pdf_form_field_from_json(json: String) -> Result<PdfFormField, String>;
-        #[swift_bridge(swift_name = "excelWorkbookFromJson")]
-        fn excel_workbook_from_json(json: String) -> Result<ExcelWorkbook, String>;
         #[swift_bridge(swift_name = "excelSheetFromJson")]
         fn excel_sheet_from_json(json: String) -> Result<ExcelSheet, String>;
-        #[swift_bridge(swift_name = "xmlExtractionResultFromJson")]
-        fn xml_extraction_result_from_json(json: String) -> Result<XmlExtractionResult, String>;
-        #[swift_bridge(swift_name = "textExtractionResultFromJson")]
-        fn text_extraction_result_from_json(json: String) -> Result<TextExtractionResult, String>;
-        #[swift_bridge(swift_name = "pptxExtractionResultFromJson")]
-        fn pptx_extraction_result_from_json(json: String) -> Result<PptxExtractionResult, String>;
-        #[swift_bridge(swift_name = "emailExtractionResultFromJson")]
-        fn email_extraction_result_from_json(json: String) -> Result<EmailExtractionResult, String>;
         #[swift_bridge(swift_name = "emailAttachmentFromJson")]
         fn email_attachment_from_json(json: String) -> Result<EmailAttachment, String>;
-        #[swift_bridge(swift_name = "ocrExtractionResultFromJson")]
-        fn ocr_extraction_result_from_json(json: String) -> Result<OcrExtractionResult, String>;
         #[swift_bridge(swift_name = "ocrTableFromJson")]
         fn ocr_table_from_json(json: String) -> Result<OcrTable, String>;
         #[swift_bridge(swift_name = "ocrTableBoundingBoxFromJson")]
@@ -4891,8 +4851,6 @@ mod ffi {
         fn image_preprocessing_metadata_from_json(json: String) -> Result<ImagePreprocessingMetadata, String>;
         #[swift_bridge(swift_name = "formulaFromJson")]
         fn formula_from_json(json: String) -> Result<Formula, String>;
-        #[swift_bridge(swift_name = "codeMetadataFromJson")]
-        fn code_metadata_from_json(json: String) -> Result<CodeMetadata, String>;
         #[swift_bridge(swift_name = "codeChunkInfoFromJson")]
         fn code_chunk_info_from_json(json: String) -> Result<CodeChunkInfo, String>;
         #[swift_bridge(swift_name = "codeDataAttributeFromJson")]
@@ -4901,18 +4859,6 @@ mod ffi {
         fn code_data_node_from_json(json: String) -> Result<CodeDataNode, String>;
         #[swift_bridge(swift_name = "metadataFromJson")]
         fn metadata_from_json(json: String) -> Result<Metadata, String>;
-        #[swift_bridge(swift_name = "excelMetadataFromJson")]
-        fn excel_metadata_from_json(json: String) -> Result<ExcelMetadata, String>;
-        #[swift_bridge(swift_name = "emailMetadataFromJson")]
-        fn email_metadata_from_json(json: String) -> Result<EmailMetadata, String>;
-        #[swift_bridge(swift_name = "archiveMetadataFromJson")]
-        fn archive_metadata_from_json(json: String) -> Result<ArchiveMetadata, String>;
-        #[swift_bridge(swift_name = "imageMetadataFromJson")]
-        fn image_metadata_from_json(json: String) -> Result<ImageMetadata, String>;
-        #[swift_bridge(swift_name = "xmlMetadataFromJson")]
-        fn xml_metadata_from_json(json: String) -> Result<XmlMetadata, String>;
-        #[swift_bridge(swift_name = "textMetadataFromJson")]
-        fn text_metadata_from_json(json: String) -> Result<TextMetadata, String>;
         #[swift_bridge(swift_name = "headerMetadataFromJson")]
         fn header_metadata_from_json(json: String) -> Result<HeaderMetadata, String>;
         #[swift_bridge(swift_name = "linkMetadataFromJson")]
@@ -4921,40 +4867,16 @@ mod ffi {
         fn image_metadata_type_from_json(json: String) -> Result<ImageMetadataType, String>;
         #[swift_bridge(swift_name = "structuredDataFromJson")]
         fn structured_data_from_json(json: String) -> Result<StructuredData, String>;
-        #[swift_bridge(swift_name = "htmlMetadataFromJson")]
-        fn html_metadata_from_json(json: String) -> Result<HtmlMetadata, String>;
-        #[swift_bridge(swift_name = "ocrMetadataFromJson")]
-        fn ocr_metadata_from_json(json: String) -> Result<OcrMetadata, String>;
         #[swift_bridge(swift_name = "errorMetadataFromJson")]
         fn error_metadata_from_json(json: String) -> Result<ErrorMetadata, String>;
         #[swift_bridge(swift_name = "pptxMetadataFromJson")]
         fn pptx_metadata_from_json(json: String) -> Result<PptxMetadata, String>;
-        #[swift_bridge(swift_name = "docxMetadataFromJson")]
-        fn docx_metadata_from_json(json: String) -> Result<DocxMetadata, String>;
-        #[swift_bridge(swift_name = "csvMetadataFromJson")]
-        fn csv_metadata_from_json(json: String) -> Result<CsvMetadata, String>;
-        #[swift_bridge(swift_name = "bibtexMetadataFromJson")]
-        fn bibtex_metadata_from_json(json: String) -> Result<BibtexMetadata, String>;
-        #[swift_bridge(swift_name = "citationMetadataFromJson")]
-        fn citation_metadata_from_json(json: String) -> Result<CitationMetadata, String>;
         #[swift_bridge(swift_name = "yearRangeFromJson")]
         fn year_range_from_json(json: String) -> Result<YearRange, String>;
-        #[swift_bridge(swift_name = "fictionBookMetadataFromJson")]
-        fn fiction_book_metadata_from_json(json: String) -> Result<FictionBookMetadata, String>;
-        #[swift_bridge(swift_name = "dbfMetadataFromJson")]
-        fn dbf_metadata_from_json(json: String) -> Result<DbfMetadata, String>;
         #[swift_bridge(swift_name = "dbfFieldInfoFromJson")]
         fn dbf_field_info_from_json(json: String) -> Result<DbfFieldInfo, String>;
-        #[swift_bridge(swift_name = "jatsMetadataFromJson")]
-        fn jats_metadata_from_json(json: String) -> Result<JatsMetadata, String>;
         #[swift_bridge(swift_name = "contributorRoleFromJson")]
         fn contributor_role_from_json(json: String) -> Result<ContributorRole, String>;
-        #[swift_bridge(swift_name = "epubMetadataFromJson")]
-        fn epub_metadata_from_json(json: String) -> Result<EpubMetadata, String>;
-        #[swift_bridge(swift_name = "pstMetadataFromJson")]
-        fn pst_metadata_from_json(json: String) -> Result<PstMetadata, String>;
-        #[swift_bridge(swift_name = "audioMetadataFromJson")]
-        fn audio_metadata_from_json(json: String) -> Result<AudioMetadata, String>;
         #[swift_bridge(swift_name = "ocrConfidenceFromJson")]
         fn ocr_confidence_from_json(json: String) -> Result<OcrConfidence, String>;
         #[swift_bridge(swift_name = "ocrRotationFromJson")]
@@ -4997,16 +4919,10 @@ mod ffi {
         fn document_summary_from_json(json: String) -> Result<DocumentSummary, String>;
         #[swift_bridge(swift_name = "tableFromJson")]
         fn table_from_json(json: String) -> Result<Table, String>;
-        #[swift_bridge(swift_name = "tableCellFromJson")]
-        fn table_cell_from_json(json: String) -> Result<TableCell, String>;
         #[swift_bridge(swift_name = "translationFromJson")]
         fn translation_from_json(json: String) -> Result<Translation, String>;
         #[swift_bridge(swift_name = "extractedUriFromJson")]
         fn extracted_uri_from_json(json: String) -> Result<ExtractedUri, String>;
-        #[swift_bridge(swift_name = "detectResponseFromJson")]
-        fn detect_response_from_json(json: String) -> Result<DetectResponse, String>;
-        #[swift_bridge(swift_name = "diffOptionsFromJson")]
-        fn diff_options_from_json(json: String) -> Result<DiffOptions, String>;
         #[swift_bridge(swift_name = "extractionDiffFromJson")]
         fn extraction_diff_from_json(json: String) -> Result<ExtractionDiff, String>;
         #[swift_bridge(swift_name = "diffHunkFromJson")]
@@ -5017,14 +4933,10 @@ mod ffi {
         fn embedded_changes_from_json(json: String) -> Result<EmbeddedChanges, String>;
         #[swift_bridge(swift_name = "embeddedDiffFromJson")]
         fn embedded_diff_from_json(json: String) -> Result<EmbeddedDiff, String>;
-        #[swift_bridge(swift_name = "rerankedDocumentFromJson")]
-        fn reranked_document_from_json(json: String) -> Result<RerankedDocument, String>;
         #[swift_bridge(swift_name = "sparseEmbeddingFromJson")]
         fn sparse_embedding_from_json(json: String) -> Result<SparseEmbedding, String>;
-        #[swift_bridge(swift_name = "sparseEmbeddingPresetFromJson")]
-        fn sparse_embedding_preset_from_json(json: String) -> Result<SparseEmbeddingPreset, String>;
-        #[swift_bridge(swift_name = "lateInteractionPresetFromJson")]
-        fn late_interaction_preset_from_json(json: String) -> Result<LateInteractionPreset, String>;
+        #[swift_bridge(swift_name = "multiVectorEmbeddingFromJson")]
+        fn multi_vector_embedding_from_json(json: String) -> Result<MultiVectorEmbedding, String>;
         #[swift_bridge(swift_name = "lateInteractionMatchFromJson")]
         fn late_interaction_match_from_json(json: String) -> Result<LateInteractionMatch, String>;
         #[swift_bridge(swift_name = "yakeParamsFromJson")]
@@ -5035,28 +4947,14 @@ mod ffi {
         fn keyword_config_from_json(json: String) -> Result<KeywordConfig, String>;
         #[swift_bridge(swift_name = "keywordFromJson")]
         fn keyword_from_json(json: String) -> Result<Keyword, String>;
-        #[swift_bridge(swift_name = "documentMetadataFromJson")]
-        fn document_metadata_from_json(json: String) -> Result<DocumentMetadata, String>;
         #[swift_bridge(swift_name = "userChunkConfigFromJson")]
         fn user_chunk_config_from_json(json: String) -> Result<UserChunkConfig, String>;
         #[swift_bridge(swift_name = "extractionConfidenceFromJson")]
         fn extraction_confidence_from_json(json: String) -> Result<ExtractionConfidence, String>;
-        #[swift_bridge(swift_name = "heuristicsConfigFromJson")]
-        fn heuristics_config_from_json(json: String) -> Result<HeuristicsConfig, String>;
-        #[swift_bridge(swift_name = "chunkInfoFromJson")]
-        fn chunk_info_from_json(json: String) -> Result<ChunkInfo, String>;
         #[swift_bridge(swift_name = "pageRangeFromJson")]
         fn page_range_from_json(json: String) -> Result<PageRange, String>;
-        #[swift_bridge(swift_name = "multidocInputFromJson")]
-        fn multidoc_input_from_json(json: String) -> Result<MultidocInput, String>;
         #[swift_bridge(swift_name = "pageSignalsFromJson")]
         fn page_signals_from_json(json: String) -> Result<PageSignals, String>;
-        #[swift_bridge(swift_name = "documentBoundaryFromJson")]
-        fn document_boundary_from_json(json: String) -> Result<DocumentBoundary, String>;
-        #[swift_bridge(swift_name = "multidocThresholdsFromJson")]
-        fn multidoc_thresholds_from_json(json: String) -> Result<MultidocThresholds, String>;
-        #[swift_bridge(swift_name = "resolvedPresetFromJson")]
-        fn resolved_preset_from_json(json: String) -> Result<ResolvedPreset, String>;
         #[swift_bridge(swift_name = "presetSampleFromJson")]
         fn preset_sample_from_json(json: String) -> Result<PresetSample, String>;
         #[swift_bridge(swift_name = "presetFromJson")]
@@ -5069,22 +4967,10 @@ mod ffi {
         fn doctor_report_from_json(json: String) -> Result<DoctorReport, String>;
         #[swift_bridge(swift_name = "paddleOcrConfigFromJson")]
         fn paddle_ocr_config_from_json(json: String) -> Result<PaddleOcrConfig, String>;
-        #[swift_bridge(swift_name = "modelPathsFromJson")]
-        fn model_paths_from_json(json: String) -> Result<ModelPaths, String>;
-        #[swift_bridge(swift_name = "orientationResultFromJson")]
-        fn orientation_result_from_json(json: String) -> Result<OrientationResult, String>;
         #[swift_bridge(swift_name = "bBoxFromJson")]
         fn b_box_from_json(json: String) -> Result<BBox, String>;
         #[swift_bridge(swift_name = "layoutDetectionFromJson")]
         fn layout_detection_from_json(json: String) -> Result<LayoutDetection, String>;
-        #[swift_bridge(swift_name = "recognizedTableFromJson")]
-        fn recognized_table_from_json(json: String) -> Result<RecognizedTable, String>;
-        #[swift_bridge(swift_name = "detectionResultFromJson")]
-        fn detection_result_from_json(json: String) -> Result<DetectionResult, String>;
-        #[swift_bridge(swift_name = "embeddedFileFromJson")]
-        fn embedded_file_from_json(json: String) -> Result<EmbeddedFile, String>;
-        #[swift_bridge(swift_name = "pdfMetadataFromJson")]
-        fn pdf_metadata_from_json(json: String) -> Result<PdfMetadata, String>;
         #[swift_bridge(swift_name = "proxyConfigFromJson")]
         fn proxy_config_from_json(json: String) -> Result<ProxyConfig, String>;
         #[swift_bridge(swift_name = "contentConfigFromJson")]
@@ -5103,6 +4989,120 @@ mod ffi {
         fn conversion_options_from_json(json: String) -> Result<ConversionOptions, String>;
         #[swift_bridge(swift_name = "preprocessingOptionsFromJson")]
         fn preprocessing_options_from_json(json: String) -> Result<PreprocessingOptions, String>;
+    }
+    extern "Rust" {
+        #[swift_bridge(swift_name = "cacheStatsFromJson")]
+        fn cache_stats_from_json(json: String) -> Result<CacheStats, String>;
+        #[swift_bridge(swift_name = "rerankerConfigFromJson")]
+        fn reranker_config_from_json(json: String) -> Result<RerankerConfig, String>;
+        #[swift_bridge(swift_name = "serverConfigFromJson")]
+        fn server_config_from_json(json: String) -> Result<ServerConfig, String>;
+        #[swift_bridge(swift_name = "structuredDataResultFromJson")]
+        fn structured_data_result_from_json(json: String) -> Result<StructuredDataResult, String>;
+        #[swift_bridge(swift_name = "xlsxAppPropertiesFromJson")]
+        fn xlsx_app_properties_from_json(json: String) -> Result<XlsxAppProperties, String>;
+        #[swift_bridge(swift_name = "pptxAppPropertiesFromJson")]
+        fn pptx_app_properties_from_json(json: String) -> Result<PptxAppProperties, String>;
+        #[swift_bridge(swift_name = "tokenReductionConfigFromJson")]
+        fn token_reduction_config_from_json(json: String) -> Result<TokenReductionConfig, String>;
+        #[swift_bridge(swift_name = "patternMatchFromJson")]
+        fn pattern_match_from_json(json: String) -> Result<PatternMatch, String>;
+        #[swift_bridge(swift_name = "footnoteAnchorFromJson")]
+        fn footnote_anchor_from_json(json: String) -> Result<FootnoteAnchor, String>;
+        #[swift_bridge(swift_name = "footnoteDefinitionFromJson")]
+        fn footnote_definition_from_json(json: String) -> Result<FootnoteDefinition, String>;
+        #[swift_bridge(swift_name = "citationFromJson")]
+        fn citation_from_json(json: String) -> Result<Citation, String>;
+        #[swift_bridge(swift_name = "tableGridFromJson")]
+        fn table_grid_from_json(json: String) -> Result<TableGrid, String>;
+        #[swift_bridge(swift_name = "excelWorkbookFromJson")]
+        fn excel_workbook_from_json(json: String) -> Result<ExcelWorkbook, String>;
+        #[swift_bridge(swift_name = "xmlExtractionResultFromJson")]
+        fn xml_extraction_result_from_json(json: String) -> Result<XmlExtractionResult, String>;
+        #[swift_bridge(swift_name = "textExtractionResultFromJson")]
+        fn text_extraction_result_from_json(json: String) -> Result<TextExtractionResult, String>;
+        #[swift_bridge(swift_name = "pptxExtractionResultFromJson")]
+        fn pptx_extraction_result_from_json(json: String) -> Result<PptxExtractionResult, String>;
+        #[swift_bridge(swift_name = "emailExtractionResultFromJson")]
+        fn email_extraction_result_from_json(json: String) -> Result<EmailExtractionResult, String>;
+        #[swift_bridge(swift_name = "ocrExtractionResultFromJson")]
+        fn ocr_extraction_result_from_json(json: String) -> Result<OcrExtractionResult, String>;
+        #[swift_bridge(swift_name = "codeMetadataFromJson")]
+        fn code_metadata_from_json(json: String) -> Result<CodeMetadata, String>;
+        #[swift_bridge(swift_name = "excelMetadataFromJson")]
+        fn excel_metadata_from_json(json: String) -> Result<ExcelMetadata, String>;
+        #[swift_bridge(swift_name = "emailMetadataFromJson")]
+        fn email_metadata_from_json(json: String) -> Result<EmailMetadata, String>;
+        #[swift_bridge(swift_name = "archiveMetadataFromJson")]
+        fn archive_metadata_from_json(json: String) -> Result<ArchiveMetadata, String>;
+        #[swift_bridge(swift_name = "imageMetadataFromJson")]
+        fn image_metadata_from_json(json: String) -> Result<ImageMetadata, String>;
+        #[swift_bridge(swift_name = "xmlMetadataFromJson")]
+        fn xml_metadata_from_json(json: String) -> Result<XmlMetadata, String>;
+        #[swift_bridge(swift_name = "textMetadataFromJson")]
+        fn text_metadata_from_json(json: String) -> Result<TextMetadata, String>;
+        #[swift_bridge(swift_name = "htmlMetadataFromJson")]
+        fn html_metadata_from_json(json: String) -> Result<HtmlMetadata, String>;
+        #[swift_bridge(swift_name = "ocrMetadataFromJson")]
+        fn ocr_metadata_from_json(json: String) -> Result<OcrMetadata, String>;
+        #[swift_bridge(swift_name = "docxMetadataFromJson")]
+        fn docx_metadata_from_json(json: String) -> Result<DocxMetadata, String>;
+        #[swift_bridge(swift_name = "csvMetadataFromJson")]
+        fn csv_metadata_from_json(json: String) -> Result<CsvMetadata, String>;
+        #[swift_bridge(swift_name = "bibtexMetadataFromJson")]
+        fn bibtex_metadata_from_json(json: String) -> Result<BibtexMetadata, String>;
+        #[swift_bridge(swift_name = "citationMetadataFromJson")]
+        fn citation_metadata_from_json(json: String) -> Result<CitationMetadata, String>;
+        #[swift_bridge(swift_name = "fictionBookMetadataFromJson")]
+        fn fiction_book_metadata_from_json(json: String) -> Result<FictionBookMetadata, String>;
+        #[swift_bridge(swift_name = "dbfMetadataFromJson")]
+        fn dbf_metadata_from_json(json: String) -> Result<DbfMetadata, String>;
+        #[swift_bridge(swift_name = "jatsMetadataFromJson")]
+        fn jats_metadata_from_json(json: String) -> Result<JatsMetadata, String>;
+        #[swift_bridge(swift_name = "epubMetadataFromJson")]
+        fn epub_metadata_from_json(json: String) -> Result<EpubMetadata, String>;
+        #[swift_bridge(swift_name = "pstMetadataFromJson")]
+        fn pst_metadata_from_json(json: String) -> Result<PstMetadata, String>;
+        #[swift_bridge(swift_name = "audioMetadataFromJson")]
+        fn audio_metadata_from_json(json: String) -> Result<AudioMetadata, String>;
+        #[swift_bridge(swift_name = "tableCellFromJson")]
+        fn table_cell_from_json(json: String) -> Result<TableCell, String>;
+        #[swift_bridge(swift_name = "detectResponseFromJson")]
+        fn detect_response_from_json(json: String) -> Result<DetectResponse, String>;
+        #[swift_bridge(swift_name = "diffOptionsFromJson")]
+        fn diff_options_from_json(json: String) -> Result<DiffOptions, String>;
+        #[swift_bridge(swift_name = "rerankedDocumentFromJson")]
+        fn reranked_document_from_json(json: String) -> Result<RerankedDocument, String>;
+        #[swift_bridge(swift_name = "sparseEmbeddingPresetFromJson")]
+        fn sparse_embedding_preset_from_json(json: String) -> Result<SparseEmbeddingPreset, String>;
+        #[swift_bridge(swift_name = "lateInteractionPresetFromJson")]
+        fn late_interaction_preset_from_json(json: String) -> Result<LateInteractionPreset, String>;
+        #[swift_bridge(swift_name = "documentMetadataFromJson")]
+        fn document_metadata_from_json(json: String) -> Result<DocumentMetadata, String>;
+        #[swift_bridge(swift_name = "heuristicsConfigFromJson")]
+        fn heuristics_config_from_json(json: String) -> Result<HeuristicsConfig, String>;
+        #[swift_bridge(swift_name = "chunkInfoFromJson")]
+        fn chunk_info_from_json(json: String) -> Result<ChunkInfo, String>;
+        #[swift_bridge(swift_name = "multidocInputFromJson")]
+        fn multidoc_input_from_json(json: String) -> Result<MultidocInput, String>;
+        #[swift_bridge(swift_name = "documentBoundaryFromJson")]
+        fn document_boundary_from_json(json: String) -> Result<DocumentBoundary, String>;
+        #[swift_bridge(swift_name = "multidocThresholdsFromJson")]
+        fn multidoc_thresholds_from_json(json: String) -> Result<MultidocThresholds, String>;
+        #[swift_bridge(swift_name = "resolvedPresetFromJson")]
+        fn resolved_preset_from_json(json: String) -> Result<ResolvedPreset, String>;
+        #[swift_bridge(swift_name = "modelPathsFromJson")]
+        fn model_paths_from_json(json: String) -> Result<ModelPaths, String>;
+        #[swift_bridge(swift_name = "orientationResultFromJson")]
+        fn orientation_result_from_json(json: String) -> Result<OrientationResult, String>;
+        #[swift_bridge(swift_name = "recognizedTableFromJson")]
+        fn recognized_table_from_json(json: String) -> Result<RecognizedTable, String>;
+        #[swift_bridge(swift_name = "detectionResultFromJson")]
+        fn detection_result_from_json(json: String) -> Result<DetectionResult, String>;
+        #[swift_bridge(swift_name = "embeddedFileFromJson")]
+        fn embedded_file_from_json(json: String) -> Result<EmbeddedFile, String>;
+        #[swift_bridge(swift_name = "pdfMetadataFromJson")]
+        fn pdf_metadata_from_json(json: String) -> Result<PdfMetadata, String>;
     }
     extern "Rust" {
         #[swift_bridge(swift_name = "executionProviderTypeFromJson")]
@@ -22174,46 +22174,6 @@ pub fn clear_tokenizer_backends() -> Result<(), String> {
     guard.clear().map_err(|e| e.to_string())
 }
 
-pub fn chunk_classification_config_from_json(json: String) -> Result<ChunkClassificationConfig, String> {
-    serde_json::from_str::<xberg::ChunkClassificationConfig>(&json)
-        .map(ChunkClassificationConfig)
-        .map_err(|e| e.to_string())
-}
-pub fn extraction_config_from_json(json: String) -> Result<ExtractionConfig, String> {
-    serde_json::from_str::<xberg::ExtractionConfig>(&json)
-        .map(ExtractionConfig)
-        .map_err(|e| e.to_string())
-}
-pub fn extract_input_from_json(json: String) -> Result<ExtractInput, String> {
-    serde_json::from_str::<xberg::ExtractInput>(&json)
-        .map(ExtractInput)
-        .map_err(|e| e.to_string())
-}
-pub fn url_extraction_config_from_json(json: String) -> Result<UrlExtractionConfig, String> {
-    serde_json::from_str::<xberg::UrlExtractionConfig>(&json)
-        .map(UrlExtractionConfig)
-        .map_err(|e| e.to_string())
-}
-pub fn ocr_config_from_json(json: String) -> Result<OcrConfig, String> {
-    serde_json::from_str::<xberg::OcrConfig>(&json)
-        .map(OcrConfig)
-        .map_err(|e| e.to_string())
-}
-pub fn extracted_document_from_json(json: String) -> Result<ExtractedDocument, String> {
-    serde_json::from_str::<xberg::ExtractedDocument>(&json)
-        .map(ExtractedDocument)
-        .map_err(|e| e.to_string())
-}
-pub fn multi_vector_embedding_from_json(json: String) -> Result<MultiVectorEmbedding, String> {
-    serde_json::from_str::<xberg::MultiVectorEmbedding>(&json)
-        .map(MultiVectorEmbedding)
-        .map_err(|e| e.to_string())
-}
-pub fn cache_stats_from_json(json: String) -> Result<CacheStats, String> {
-    serde_json::from_str::<xberg::CacheStats>(&json)
-        .map(CacheStats)
-        .map_err(|e| e.to_string())
-}
 pub fn acceleration_config_from_json(json: String) -> Result<AccelerationConfig, String> {
     serde_json::from_str::<xberg::AccelerationConfig>(&json)
         .map(AccelerationConfig)
@@ -22227,6 +22187,11 @@ pub fn captioning_config_from_json(json: String) -> Result<CaptioningConfig, Str
 pub fn chunk_classification_definition_from_json(json: String) -> Result<ChunkClassificationDefinition, String> {
     serde_json::from_str::<xberg::ChunkClassificationDefinition>(&json)
         .map(ChunkClassificationDefinition)
+        .map_err(|e| e.to_string())
+}
+pub fn chunk_classification_config_from_json(json: String) -> Result<ChunkClassificationConfig, String> {
+    serde_json::from_str::<xberg::ChunkClassificationConfig>(&json)
+        .map(ChunkClassificationConfig)
         .map_err(|e| e.to_string())
 }
 pub fn page_classification_config_from_json(json: String) -> Result<PageClassificationConfig, String> {
@@ -22249,6 +22214,11 @@ pub fn email_config_from_json(json: String) -> Result<EmailConfig, String> {
         .map(EmailConfig)
         .map_err(|e| e.to_string())
 }
+pub fn extraction_config_from_json(json: String) -> Result<ExtractionConfig, String> {
+    serde_json::from_str::<xberg::ExtractionConfig>(&json)
+        .map(ExtractionConfig)
+        .map_err(|e| e.to_string())
+}
 pub fn file_extraction_config_from_json(json: String) -> Result<FileExtractionConfig, String> {
     serde_json::from_str::<xberg::FileExtractionConfig>(&json)
         .map(FileExtractionConfig)
@@ -22257,6 +22227,11 @@ pub fn file_extraction_config_from_json(json: String) -> Result<FileExtractionCo
 pub fn svg_options_from_json(json: String) -> Result<SvgOptions, String> {
     serde_json::from_str::<xberg::core::config::extraction::SvgOptions>(&json)
         .map(SvgOptions)
+        .map_err(|e| e.to_string())
+}
+pub fn extract_input_from_json(json: String) -> Result<ExtractInput, String> {
+    serde_json::from_str::<xberg::ExtractInput>(&json)
+        .map(ExtractInput)
         .map_err(|e| e.to_string())
 }
 pub fn extraction_error_item_from_json(json: String) -> Result<ExtractionErrorItem, String> {
@@ -22272,6 +22247,11 @@ pub fn extraction_summary_from_json(json: String) -> Result<ExtractionSummary, S
 pub fn extraction_result_from_json(json: String) -> Result<ExtractionResult, String> {
     serde_json::from_str::<xberg::ExtractionResult>(&json)
         .map(ExtractionResult)
+        .map_err(|e| e.to_string())
+}
+pub fn url_extraction_config_from_json(json: String) -> Result<UrlExtractionConfig, String> {
+    serde_json::from_str::<xberg::UrlExtractionConfig>(&json)
+        .map(UrlExtractionConfig)
         .map_err(|e| e.to_string())
 }
 pub fn image_extraction_config_from_json(json: String) -> Result<ImageExtractionConfig, String> {
@@ -22359,6 +22339,11 @@ pub fn ocr_pipeline_config_from_json(json: String) -> Result<OcrPipelineConfig, 
         .map(OcrPipelineConfig)
         .map_err(|e| e.to_string())
 }
+pub fn ocr_config_from_json(json: String) -> Result<OcrConfig, String> {
+    serde_json::from_str::<xberg::OcrConfig>(&json)
+        .map(OcrConfig)
+        .map_err(|e| e.to_string())
+}
 pub fn page_config_from_json(json: String) -> Result<PageConfig, String> {
     serde_json::from_str::<xberg::PageConfig>(&json)
         .map(PageConfig)
@@ -22404,11 +22389,6 @@ pub fn redaction_pattern_from_json(json: String) -> Result<RedactionPattern, Str
         .map(RedactionPattern)
         .map_err(|e| e.to_string())
 }
-pub fn reranker_config_from_json(json: String) -> Result<RerankerConfig, String> {
-    serde_json::from_str::<xberg::RerankerConfig>(&json)
-        .map(RerankerConfig)
-        .map_err(|e| e.to_string())
-}
 pub fn sparse_embedding_config_from_json(json: String) -> Result<SparseEmbeddingConfig, String> {
     serde_json::from_str::<xberg::SparseEmbeddingConfig>(&json)
         .map(SparseEmbeddingConfig)
@@ -22444,29 +22424,9 @@ pub fn supported_format_from_json(json: String) -> Result<SupportedFormat, Strin
         .map(SupportedFormat)
         .map_err(|e| e.to_string())
 }
-pub fn server_config_from_json(json: String) -> Result<ServerConfig, String> {
-    serde_json::from_str::<xberg::ServerConfig>(&json)
-        .map(ServerConfig)
-        .map_err(|e| e.to_string())
-}
-pub fn structured_data_result_from_json(json: String) -> Result<StructuredDataResult, String> {
-    serde_json::from_str::<xberg::extraction::structured::StructuredDataResult>(&json)
-        .map(StructuredDataResult)
-        .map_err(|e| e.to_string())
-}
 pub fn docx_app_properties_from_json(json: String) -> Result<DocxAppProperties, String> {
     serde_json::from_str::<xberg::DocxAppProperties>(&json)
         .map(DocxAppProperties)
-        .map_err(|e| e.to_string())
-}
-pub fn xlsx_app_properties_from_json(json: String) -> Result<XlsxAppProperties, String> {
-    serde_json::from_str::<xberg::extraction::office_metadata::app_properties::XlsxAppProperties>(&json)
-        .map(XlsxAppProperties)
-        .map_err(|e| e.to_string())
-}
-pub fn pptx_app_properties_from_json(json: String) -> Result<PptxAppProperties, String> {
-    serde_json::from_str::<xberg::extraction::office_metadata::app_properties::PptxAppProperties>(&json)
-        .map(PptxAppProperties)
         .map_err(|e| e.to_string())
 }
 pub fn core_properties_from_json(json: String) -> Result<CoreProperties, String> {
@@ -22479,34 +22439,9 @@ pub fn security_limits_from_json(json: String) -> Result<SecurityLimits, String>
         .map(SecurityLimits)
         .map_err(|e| e.to_string())
 }
-pub fn token_reduction_config_from_json(json: String) -> Result<TokenReductionConfig, String> {
-    serde_json::from_str::<xberg::TokenReductionConfig>(&json)
-        .map(TokenReductionConfig)
-        .map_err(|e| e.to_string())
-}
-pub fn pattern_match_from_json(json: String) -> Result<PatternMatch, String> {
-    serde_json::from_str::<xberg::text::redaction::patterns::PatternMatch>(&json)
-        .map(PatternMatch)
-        .map_err(|e| e.to_string())
-}
 pub fn footnote_config_from_json(json: String) -> Result<FootnoteConfig, String> {
     serde_json::from_str::<xberg::FootnoteConfig>(&json)
         .map(FootnoteConfig)
-        .map_err(|e| e.to_string())
-}
-pub fn footnote_anchor_from_json(json: String) -> Result<FootnoteAnchor, String> {
-    serde_json::from_str::<xberg::FootnoteAnchor>(&json)
-        .map(FootnoteAnchor)
-        .map_err(|e| e.to_string())
-}
-pub fn footnote_definition_from_json(json: String) -> Result<FootnoteDefinition, String> {
-    serde_json::from_str::<xberg::FootnoteDefinition>(&json)
-        .map(FootnoteDefinition)
-        .map_err(|e| e.to_string())
-}
-pub fn citation_from_json(json: String) -> Result<Citation, String> {
-    serde_json::from_str::<xberg::Citation>(&json)
-        .map(Citation)
         .map_err(|e| e.to_string())
 }
 pub fn pdf_annotation_from_json(json: String) -> Result<PdfAnnotation, String> {
@@ -22569,11 +22504,6 @@ pub fn document_node_from_json(json: String) -> Result<DocumentNode, String> {
         .map(DocumentNode)
         .map_err(|e| e.to_string())
 }
-pub fn table_grid_from_json(json: String) -> Result<TableGrid, String> {
-    serde_json::from_str::<xberg::TableGrid>(&json)
-        .map(TableGrid)
-        .map_err(|e| e.to_string())
-}
 pub fn grid_cell_from_json(json: String) -> Result<GridCell, String> {
     serde_json::from_str::<xberg::GridCell>(&json)
         .map(GridCell)
@@ -22597,6 +22527,11 @@ pub fn document_counts_from_json(json: String) -> Result<DocumentCounts, String>
 pub fn language_confidence_from_json(json: String) -> Result<LanguageConfidence, String> {
     serde_json::from_str::<xberg::LanguageConfidence>(&json)
         .map(LanguageConfidence)
+        .map_err(|e| e.to_string())
+}
+pub fn extracted_document_from_json(json: String) -> Result<ExtractedDocument, String> {
+    serde_json::from_str::<xberg::ExtractedDocument>(&json)
+        .map(ExtractedDocument)
         .map_err(|e| e.to_string())
 }
 pub fn archive_entry_from_json(json: String) -> Result<ArchiveEntry, String> {
@@ -22664,44 +22599,14 @@ pub fn pdf_form_field_from_json(json: String) -> Result<PdfFormField, String> {
         .map(PdfFormField)
         .map_err(|e| e.to_string())
 }
-pub fn excel_workbook_from_json(json: String) -> Result<ExcelWorkbook, String> {
-    serde_json::from_str::<xberg::ExcelWorkbook>(&json)
-        .map(ExcelWorkbook)
-        .map_err(|e| e.to_string())
-}
 pub fn excel_sheet_from_json(json: String) -> Result<ExcelSheet, String> {
     serde_json::from_str::<xberg::ExcelSheet>(&json)
         .map(ExcelSheet)
         .map_err(|e| e.to_string())
 }
-pub fn xml_extraction_result_from_json(json: String) -> Result<XmlExtractionResult, String> {
-    serde_json::from_str::<xberg::XmlExtractionResult>(&json)
-        .map(XmlExtractionResult)
-        .map_err(|e| e.to_string())
-}
-pub fn text_extraction_result_from_json(json: String) -> Result<TextExtractionResult, String> {
-    serde_json::from_str::<xberg::TextExtractionResult>(&json)
-        .map(TextExtractionResult)
-        .map_err(|e| e.to_string())
-}
-pub fn pptx_extraction_result_from_json(json: String) -> Result<PptxExtractionResult, String> {
-    serde_json::from_str::<xberg::PptxExtractionResult>(&json)
-        .map(PptxExtractionResult)
-        .map_err(|e| e.to_string())
-}
-pub fn email_extraction_result_from_json(json: String) -> Result<EmailExtractionResult, String> {
-    serde_json::from_str::<xberg::EmailExtractionResult>(&json)
-        .map(EmailExtractionResult)
-        .map_err(|e| e.to_string())
-}
 pub fn email_attachment_from_json(json: String) -> Result<EmailAttachment, String> {
     serde_json::from_str::<xberg::EmailAttachment>(&json)
         .map(EmailAttachment)
-        .map_err(|e| e.to_string())
-}
-pub fn ocr_extraction_result_from_json(json: String) -> Result<OcrExtractionResult, String> {
-    serde_json::from_str::<xberg::OcrExtractionResult>(&json)
-        .map(OcrExtractionResult)
         .map_err(|e| e.to_string())
 }
 pub fn ocr_table_from_json(json: String) -> Result<OcrTable, String> {
@@ -22734,11 +22639,6 @@ pub fn formula_from_json(json: String) -> Result<Formula, String> {
         .map(Formula)
         .map_err(|e| e.to_string())
 }
-pub fn code_metadata_from_json(json: String) -> Result<CodeMetadata, String> {
-    serde_json::from_str::<xberg::CodeMetadata>(&json)
-        .map(CodeMetadata)
-        .map_err(|e| e.to_string())
-}
 pub fn code_chunk_info_from_json(json: String) -> Result<CodeChunkInfo, String> {
     serde_json::from_str::<xberg::CodeChunkInfo>(&json)
         .map(CodeChunkInfo)
@@ -22757,36 +22657,6 @@ pub fn code_data_node_from_json(json: String) -> Result<CodeDataNode, String> {
 pub fn metadata_from_json(json: String) -> Result<Metadata, String> {
     serde_json::from_str::<xberg::Metadata>(&json)
         .map(Metadata)
-        .map_err(|e| e.to_string())
-}
-pub fn excel_metadata_from_json(json: String) -> Result<ExcelMetadata, String> {
-    serde_json::from_str::<xberg::ExcelMetadata>(&json)
-        .map(ExcelMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn email_metadata_from_json(json: String) -> Result<EmailMetadata, String> {
-    serde_json::from_str::<xberg::EmailMetadata>(&json)
-        .map(EmailMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn archive_metadata_from_json(json: String) -> Result<ArchiveMetadata, String> {
-    serde_json::from_str::<xberg::ArchiveMetadata>(&json)
-        .map(ArchiveMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn image_metadata_from_json(json: String) -> Result<ImageMetadata, String> {
-    serde_json::from_str::<xberg::ImageMetadata>(&json)
-        .map(ImageMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn xml_metadata_from_json(json: String) -> Result<XmlMetadata, String> {
-    serde_json::from_str::<xberg::XmlMetadata>(&json)
-        .map(XmlMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn text_metadata_from_json(json: String) -> Result<TextMetadata, String> {
-    serde_json::from_str::<xberg::TextMetadata>(&json)
-        .map(TextMetadata)
         .map_err(|e| e.to_string())
 }
 pub fn header_metadata_from_json(json: String) -> Result<HeaderMetadata, String> {
@@ -22809,16 +22679,6 @@ pub fn structured_data_from_json(json: String) -> Result<StructuredData, String>
         .map(StructuredData)
         .map_err(|e| e.to_string())
 }
-pub fn html_metadata_from_json(json: String) -> Result<HtmlMetadata, String> {
-    serde_json::from_str::<xberg::HtmlMetadata>(&json)
-        .map(HtmlMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn ocr_metadata_from_json(json: String) -> Result<OcrMetadata, String> {
-    serde_json::from_str::<xberg::OcrMetadata>(&json)
-        .map(OcrMetadata)
-        .map_err(|e| e.to_string())
-}
 pub fn error_metadata_from_json(json: String) -> Result<ErrorMetadata, String> {
     serde_json::from_str::<xberg::ErrorMetadata>(&json)
         .map(ErrorMetadata)
@@ -22829,39 +22689,9 @@ pub fn pptx_metadata_from_json(json: String) -> Result<PptxMetadata, String> {
         .map(PptxMetadata)
         .map_err(|e| e.to_string())
 }
-pub fn docx_metadata_from_json(json: String) -> Result<DocxMetadata, String> {
-    serde_json::from_str::<xberg::DocxMetadata>(&json)
-        .map(DocxMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn csv_metadata_from_json(json: String) -> Result<CsvMetadata, String> {
-    serde_json::from_str::<xberg::CsvMetadata>(&json)
-        .map(CsvMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn bibtex_metadata_from_json(json: String) -> Result<BibtexMetadata, String> {
-    serde_json::from_str::<xberg::BibtexMetadata>(&json)
-        .map(BibtexMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn citation_metadata_from_json(json: String) -> Result<CitationMetadata, String> {
-    serde_json::from_str::<xberg::CitationMetadata>(&json)
-        .map(CitationMetadata)
-        .map_err(|e| e.to_string())
-}
 pub fn year_range_from_json(json: String) -> Result<YearRange, String> {
     serde_json::from_str::<xberg::YearRange>(&json)
         .map(YearRange)
-        .map_err(|e| e.to_string())
-}
-pub fn fiction_book_metadata_from_json(json: String) -> Result<FictionBookMetadata, String> {
-    serde_json::from_str::<xberg::FictionBookMetadata>(&json)
-        .map(FictionBookMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn dbf_metadata_from_json(json: String) -> Result<DbfMetadata, String> {
-    serde_json::from_str::<xberg::DbfMetadata>(&json)
-        .map(DbfMetadata)
         .map_err(|e| e.to_string())
 }
 pub fn dbf_field_info_from_json(json: String) -> Result<DbfFieldInfo, String> {
@@ -22869,29 +22699,9 @@ pub fn dbf_field_info_from_json(json: String) -> Result<DbfFieldInfo, String> {
         .map(DbfFieldInfo)
         .map_err(|e| e.to_string())
 }
-pub fn jats_metadata_from_json(json: String) -> Result<JatsMetadata, String> {
-    serde_json::from_str::<xberg::JatsMetadata>(&json)
-        .map(JatsMetadata)
-        .map_err(|e| e.to_string())
-}
 pub fn contributor_role_from_json(json: String) -> Result<ContributorRole, String> {
     serde_json::from_str::<xberg::ContributorRole>(&json)
         .map(ContributorRole)
-        .map_err(|e| e.to_string())
-}
-pub fn epub_metadata_from_json(json: String) -> Result<EpubMetadata, String> {
-    serde_json::from_str::<xberg::EpubMetadata>(&json)
-        .map(EpubMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn pst_metadata_from_json(json: String) -> Result<PstMetadata, String> {
-    serde_json::from_str::<xberg::PstMetadata>(&json)
-        .map(PstMetadata)
-        .map_err(|e| e.to_string())
-}
-pub fn audio_metadata_from_json(json: String) -> Result<AudioMetadata, String> {
-    serde_json::from_str::<xberg::AudioMetadata>(&json)
-        .map(AudioMetadata)
         .map_err(|e| e.to_string())
 }
 pub fn ocr_confidence_from_json(json: String) -> Result<OcrConfidence, String> {
@@ -22999,11 +22809,6 @@ pub fn table_from_json(json: String) -> Result<Table, String> {
         .map(Table)
         .map_err(|e| e.to_string())
 }
-pub fn table_cell_from_json(json: String) -> Result<TableCell, String> {
-    serde_json::from_str::<xberg::TableCell>(&json)
-        .map(TableCell)
-        .map_err(|e| e.to_string())
-}
 pub fn translation_from_json(json: String) -> Result<Translation, String> {
     serde_json::from_str::<xberg::Translation>(&json)
         .map(Translation)
@@ -23012,16 +22817,6 @@ pub fn translation_from_json(json: String) -> Result<Translation, String> {
 pub fn extracted_uri_from_json(json: String) -> Result<ExtractedUri, String> {
     serde_json::from_str::<xberg::ExtractedUri>(&json)
         .map(ExtractedUri)
-        .map_err(|e| e.to_string())
-}
-pub fn detect_response_from_json(json: String) -> Result<DetectResponse, String> {
-    serde_json::from_str::<xberg::api::DetectResponse>(&json)
-        .map(DetectResponse)
-        .map_err(|e| e.to_string())
-}
-pub fn diff_options_from_json(json: String) -> Result<DiffOptions, String> {
-    serde_json::from_str::<xberg::DiffOptions>(&json)
-        .map(DiffOptions)
         .map_err(|e| e.to_string())
 }
 pub fn extraction_diff_from_json(json: String) -> Result<ExtractionDiff, String> {
@@ -23049,24 +22844,14 @@ pub fn embedded_diff_from_json(json: String) -> Result<EmbeddedDiff, String> {
         .map(EmbeddedDiff)
         .map_err(|e| e.to_string())
 }
-pub fn reranked_document_from_json(json: String) -> Result<RerankedDocument, String> {
-    serde_json::from_str::<xberg::RerankedDocument>(&json)
-        .map(RerankedDocument)
-        .map_err(|e| e.to_string())
-}
 pub fn sparse_embedding_from_json(json: String) -> Result<SparseEmbedding, String> {
     serde_json::from_str::<xberg::SparseEmbedding>(&json)
         .map(SparseEmbedding)
         .map_err(|e| e.to_string())
 }
-pub fn sparse_embedding_preset_from_json(json: String) -> Result<SparseEmbeddingPreset, String> {
-    serde_json::from_str::<xberg::SparseEmbeddingPreset>(&json)
-        .map(SparseEmbeddingPreset)
-        .map_err(|e| e.to_string())
-}
-pub fn late_interaction_preset_from_json(json: String) -> Result<LateInteractionPreset, String> {
-    serde_json::from_str::<xberg::LateInteractionPreset>(&json)
-        .map(LateInteractionPreset)
+pub fn multi_vector_embedding_from_json(json: String) -> Result<MultiVectorEmbedding, String> {
+    serde_json::from_str::<xberg::MultiVectorEmbedding>(&json)
+        .map(MultiVectorEmbedding)
         .map_err(|e| e.to_string())
 }
 pub fn late_interaction_match_from_json(json: String) -> Result<LateInteractionMatch, String> {
@@ -23094,11 +22879,6 @@ pub fn keyword_from_json(json: String) -> Result<Keyword, String> {
         .map(Keyword)
         .map_err(|e| e.to_string())
 }
-pub fn document_metadata_from_json(json: String) -> Result<DocumentMetadata, String> {
-    serde_json::from_str::<xberg::DocumentMetadata>(&json)
-        .map(DocumentMetadata)
-        .map_err(|e| e.to_string())
-}
 pub fn user_chunk_config_from_json(json: String) -> Result<UserChunkConfig, String> {
     serde_json::from_str::<xberg::UserChunkConfig>(&json)
         .map(UserChunkConfig)
@@ -23109,44 +22889,14 @@ pub fn extraction_confidence_from_json(json: String) -> Result<ExtractionConfide
         .map(ExtractionConfidence)
         .map_err(|e| e.to_string())
 }
-pub fn heuristics_config_from_json(json: String) -> Result<HeuristicsConfig, String> {
-    serde_json::from_str::<xberg::HeuristicsConfig>(&json)
-        .map(HeuristicsConfig)
-        .map_err(|e| e.to_string())
-}
-pub fn chunk_info_from_json(json: String) -> Result<ChunkInfo, String> {
-    serde_json::from_str::<xberg::ChunkInfo>(&json)
-        .map(ChunkInfo)
-        .map_err(|e| e.to_string())
-}
 pub fn page_range_from_json(json: String) -> Result<PageRange, String> {
     serde_json::from_str::<xberg::PageRange>(&json)
         .map(PageRange)
         .map_err(|e| e.to_string())
 }
-pub fn multidoc_input_from_json(json: String) -> Result<MultidocInput, String> {
-    serde_json::from_str::<xberg::MultidocInput>(&json)
-        .map(MultidocInput)
-        .map_err(|e| e.to_string())
-}
 pub fn page_signals_from_json(json: String) -> Result<PageSignals, String> {
     serde_json::from_str::<xberg::PageSignals>(&json)
         .map(PageSignals)
-        .map_err(|e| e.to_string())
-}
-pub fn document_boundary_from_json(json: String) -> Result<DocumentBoundary, String> {
-    serde_json::from_str::<xberg::DocumentBoundary>(&json)
-        .map(DocumentBoundary)
-        .map_err(|e| e.to_string())
-}
-pub fn multidoc_thresholds_from_json(json: String) -> Result<MultidocThresholds, String> {
-    serde_json::from_str::<xberg::MultidocThresholds>(&json)
-        .map(MultidocThresholds)
-        .map_err(|e| e.to_string())
-}
-pub fn resolved_preset_from_json(json: String) -> Result<ResolvedPreset, String> {
-    serde_json::from_str::<xberg::ResolvedPreset>(&json)
-        .map(ResolvedPreset)
         .map_err(|e| e.to_string())
 }
 pub fn preset_sample_from_json(json: String) -> Result<PresetSample, String> {
@@ -23179,16 +22929,6 @@ pub fn paddle_ocr_config_from_json(json: String) -> Result<PaddleOcrConfig, Stri
         .map(PaddleOcrConfig)
         .map_err(|e| e.to_string())
 }
-pub fn model_paths_from_json(json: String) -> Result<ModelPaths, String> {
-    serde_json::from_str::<xberg::ModelPaths>(&json)
-        .map(ModelPaths)
-        .map_err(|e| e.to_string())
-}
-pub fn orientation_result_from_json(json: String) -> Result<OrientationResult, String> {
-    serde_json::from_str::<xberg::OrientationResult>(&json)
-        .map(OrientationResult)
-        .map_err(|e| e.to_string())
-}
 pub fn b_box_from_json(json: String) -> Result<BBox, String> {
     serde_json::from_str::<xberg::BBox>(&json)
         .map(BBox)
@@ -23197,26 +22937,6 @@ pub fn b_box_from_json(json: String) -> Result<BBox, String> {
 pub fn layout_detection_from_json(json: String) -> Result<LayoutDetection, String> {
     serde_json::from_str::<xberg::LayoutDetection>(&json)
         .map(LayoutDetection)
-        .map_err(|e| e.to_string())
-}
-pub fn recognized_table_from_json(json: String) -> Result<RecognizedTable, String> {
-    serde_json::from_str::<xberg::RecognizedTable>(&json)
-        .map(RecognizedTable)
-        .map_err(|e| e.to_string())
-}
-pub fn detection_result_from_json(json: String) -> Result<DetectionResult, String> {
-    serde_json::from_str::<xberg::DetectionResult>(&json)
-        .map(DetectionResult)
-        .map_err(|e| e.to_string())
-}
-pub fn embedded_file_from_json(json: String) -> Result<EmbeddedFile, String> {
-    serde_json::from_str::<xberg::pdf::embedded_files::EmbeddedFile>(&json)
-        .map(EmbeddedFile)
-        .map_err(|e| e.to_string())
-}
-pub fn pdf_metadata_from_json(json: String) -> Result<PdfMetadata, String> {
-    serde_json::from_str::<xberg::pdf::metadata::PdfMetadata>(&json)
-        .map(PdfMetadata)
         .map_err(|e| e.to_string())
 }
 pub fn proxy_config_from_json(json: String) -> Result<ProxyConfig, String> {
@@ -23262,6 +22982,286 @@ pub fn conversion_options_from_json(json: String) -> Result<ConversionOptions, S
 pub fn preprocessing_options_from_json(json: String) -> Result<PreprocessingOptions, String> {
     serde_json::from_str::<html_to_markdown_rs::PreprocessingOptions>(&json)
         .map(PreprocessingOptions)
+        .map_err(|e| e.to_string())
+}
+pub fn cache_stats_from_json(json: String) -> Result<CacheStats, String> {
+    serde_json::from_str::<xberg::CacheStats>(&json)
+        .map(CacheStats)
+        .map_err(|e| e.to_string())
+}
+pub fn reranker_config_from_json(json: String) -> Result<RerankerConfig, String> {
+    serde_json::from_str::<xberg::RerankerConfig>(&json)
+        .map(RerankerConfig)
+        .map_err(|e| e.to_string())
+}
+pub fn server_config_from_json(json: String) -> Result<ServerConfig, String> {
+    serde_json::from_str::<xberg::ServerConfig>(&json)
+        .map(ServerConfig)
+        .map_err(|e| e.to_string())
+}
+pub fn structured_data_result_from_json(json: String) -> Result<StructuredDataResult, String> {
+    serde_json::from_str::<xberg::extraction::structured::StructuredDataResult>(&json)
+        .map(StructuredDataResult)
+        .map_err(|e| e.to_string())
+}
+pub fn xlsx_app_properties_from_json(json: String) -> Result<XlsxAppProperties, String> {
+    serde_json::from_str::<xberg::extraction::office_metadata::app_properties::XlsxAppProperties>(&json)
+        .map(XlsxAppProperties)
+        .map_err(|e| e.to_string())
+}
+pub fn pptx_app_properties_from_json(json: String) -> Result<PptxAppProperties, String> {
+    serde_json::from_str::<xberg::extraction::office_metadata::app_properties::PptxAppProperties>(&json)
+        .map(PptxAppProperties)
+        .map_err(|e| e.to_string())
+}
+pub fn token_reduction_config_from_json(json: String) -> Result<TokenReductionConfig, String> {
+    serde_json::from_str::<xberg::TokenReductionConfig>(&json)
+        .map(TokenReductionConfig)
+        .map_err(|e| e.to_string())
+}
+pub fn pattern_match_from_json(json: String) -> Result<PatternMatch, String> {
+    serde_json::from_str::<xberg::text::redaction::patterns::PatternMatch>(&json)
+        .map(PatternMatch)
+        .map_err(|e| e.to_string())
+}
+pub fn footnote_anchor_from_json(json: String) -> Result<FootnoteAnchor, String> {
+    serde_json::from_str::<xberg::FootnoteAnchor>(&json)
+        .map(FootnoteAnchor)
+        .map_err(|e| e.to_string())
+}
+pub fn footnote_definition_from_json(json: String) -> Result<FootnoteDefinition, String> {
+    serde_json::from_str::<xberg::FootnoteDefinition>(&json)
+        .map(FootnoteDefinition)
+        .map_err(|e| e.to_string())
+}
+pub fn citation_from_json(json: String) -> Result<Citation, String> {
+    serde_json::from_str::<xberg::Citation>(&json)
+        .map(Citation)
+        .map_err(|e| e.to_string())
+}
+pub fn table_grid_from_json(json: String) -> Result<TableGrid, String> {
+    serde_json::from_str::<xberg::TableGrid>(&json)
+        .map(TableGrid)
+        .map_err(|e| e.to_string())
+}
+pub fn excel_workbook_from_json(json: String) -> Result<ExcelWorkbook, String> {
+    serde_json::from_str::<xberg::ExcelWorkbook>(&json)
+        .map(ExcelWorkbook)
+        .map_err(|e| e.to_string())
+}
+pub fn xml_extraction_result_from_json(json: String) -> Result<XmlExtractionResult, String> {
+    serde_json::from_str::<xberg::XmlExtractionResult>(&json)
+        .map(XmlExtractionResult)
+        .map_err(|e| e.to_string())
+}
+pub fn text_extraction_result_from_json(json: String) -> Result<TextExtractionResult, String> {
+    serde_json::from_str::<xberg::TextExtractionResult>(&json)
+        .map(TextExtractionResult)
+        .map_err(|e| e.to_string())
+}
+pub fn pptx_extraction_result_from_json(json: String) -> Result<PptxExtractionResult, String> {
+    serde_json::from_str::<xberg::PptxExtractionResult>(&json)
+        .map(PptxExtractionResult)
+        .map_err(|e| e.to_string())
+}
+pub fn email_extraction_result_from_json(json: String) -> Result<EmailExtractionResult, String> {
+    serde_json::from_str::<xberg::EmailExtractionResult>(&json)
+        .map(EmailExtractionResult)
+        .map_err(|e| e.to_string())
+}
+pub fn ocr_extraction_result_from_json(json: String) -> Result<OcrExtractionResult, String> {
+    serde_json::from_str::<xberg::OcrExtractionResult>(&json)
+        .map(OcrExtractionResult)
+        .map_err(|e| e.to_string())
+}
+pub fn code_metadata_from_json(json: String) -> Result<CodeMetadata, String> {
+    serde_json::from_str::<xberg::CodeMetadata>(&json)
+        .map(CodeMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn excel_metadata_from_json(json: String) -> Result<ExcelMetadata, String> {
+    serde_json::from_str::<xberg::ExcelMetadata>(&json)
+        .map(ExcelMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn email_metadata_from_json(json: String) -> Result<EmailMetadata, String> {
+    serde_json::from_str::<xberg::EmailMetadata>(&json)
+        .map(EmailMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn archive_metadata_from_json(json: String) -> Result<ArchiveMetadata, String> {
+    serde_json::from_str::<xberg::ArchiveMetadata>(&json)
+        .map(ArchiveMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn image_metadata_from_json(json: String) -> Result<ImageMetadata, String> {
+    serde_json::from_str::<xberg::ImageMetadata>(&json)
+        .map(ImageMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn xml_metadata_from_json(json: String) -> Result<XmlMetadata, String> {
+    serde_json::from_str::<xberg::XmlMetadata>(&json)
+        .map(XmlMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn text_metadata_from_json(json: String) -> Result<TextMetadata, String> {
+    serde_json::from_str::<xberg::TextMetadata>(&json)
+        .map(TextMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn html_metadata_from_json(json: String) -> Result<HtmlMetadata, String> {
+    serde_json::from_str::<xberg::HtmlMetadata>(&json)
+        .map(HtmlMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn ocr_metadata_from_json(json: String) -> Result<OcrMetadata, String> {
+    serde_json::from_str::<xberg::OcrMetadata>(&json)
+        .map(OcrMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn docx_metadata_from_json(json: String) -> Result<DocxMetadata, String> {
+    serde_json::from_str::<xberg::DocxMetadata>(&json)
+        .map(DocxMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn csv_metadata_from_json(json: String) -> Result<CsvMetadata, String> {
+    serde_json::from_str::<xberg::CsvMetadata>(&json)
+        .map(CsvMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn bibtex_metadata_from_json(json: String) -> Result<BibtexMetadata, String> {
+    serde_json::from_str::<xberg::BibtexMetadata>(&json)
+        .map(BibtexMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn citation_metadata_from_json(json: String) -> Result<CitationMetadata, String> {
+    serde_json::from_str::<xberg::CitationMetadata>(&json)
+        .map(CitationMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn fiction_book_metadata_from_json(json: String) -> Result<FictionBookMetadata, String> {
+    serde_json::from_str::<xberg::FictionBookMetadata>(&json)
+        .map(FictionBookMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn dbf_metadata_from_json(json: String) -> Result<DbfMetadata, String> {
+    serde_json::from_str::<xberg::DbfMetadata>(&json)
+        .map(DbfMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn jats_metadata_from_json(json: String) -> Result<JatsMetadata, String> {
+    serde_json::from_str::<xberg::JatsMetadata>(&json)
+        .map(JatsMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn epub_metadata_from_json(json: String) -> Result<EpubMetadata, String> {
+    serde_json::from_str::<xberg::EpubMetadata>(&json)
+        .map(EpubMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn pst_metadata_from_json(json: String) -> Result<PstMetadata, String> {
+    serde_json::from_str::<xberg::PstMetadata>(&json)
+        .map(PstMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn audio_metadata_from_json(json: String) -> Result<AudioMetadata, String> {
+    serde_json::from_str::<xberg::AudioMetadata>(&json)
+        .map(AudioMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn table_cell_from_json(json: String) -> Result<TableCell, String> {
+    serde_json::from_str::<xberg::TableCell>(&json)
+        .map(TableCell)
+        .map_err(|e| e.to_string())
+}
+pub fn detect_response_from_json(json: String) -> Result<DetectResponse, String> {
+    serde_json::from_str::<xberg::api::DetectResponse>(&json)
+        .map(DetectResponse)
+        .map_err(|e| e.to_string())
+}
+pub fn diff_options_from_json(json: String) -> Result<DiffOptions, String> {
+    serde_json::from_str::<xberg::DiffOptions>(&json)
+        .map(DiffOptions)
+        .map_err(|e| e.to_string())
+}
+pub fn reranked_document_from_json(json: String) -> Result<RerankedDocument, String> {
+    serde_json::from_str::<xberg::RerankedDocument>(&json)
+        .map(RerankedDocument)
+        .map_err(|e| e.to_string())
+}
+pub fn sparse_embedding_preset_from_json(json: String) -> Result<SparseEmbeddingPreset, String> {
+    serde_json::from_str::<xberg::SparseEmbeddingPreset>(&json)
+        .map(SparseEmbeddingPreset)
+        .map_err(|e| e.to_string())
+}
+pub fn late_interaction_preset_from_json(json: String) -> Result<LateInteractionPreset, String> {
+    serde_json::from_str::<xberg::LateInteractionPreset>(&json)
+        .map(LateInteractionPreset)
+        .map_err(|e| e.to_string())
+}
+pub fn document_metadata_from_json(json: String) -> Result<DocumentMetadata, String> {
+    serde_json::from_str::<xberg::DocumentMetadata>(&json)
+        .map(DocumentMetadata)
+        .map_err(|e| e.to_string())
+}
+pub fn heuristics_config_from_json(json: String) -> Result<HeuristicsConfig, String> {
+    serde_json::from_str::<xberg::HeuristicsConfig>(&json)
+        .map(HeuristicsConfig)
+        .map_err(|e| e.to_string())
+}
+pub fn chunk_info_from_json(json: String) -> Result<ChunkInfo, String> {
+    serde_json::from_str::<xberg::ChunkInfo>(&json)
+        .map(ChunkInfo)
+        .map_err(|e| e.to_string())
+}
+pub fn multidoc_input_from_json(json: String) -> Result<MultidocInput, String> {
+    serde_json::from_str::<xberg::MultidocInput>(&json)
+        .map(MultidocInput)
+        .map_err(|e| e.to_string())
+}
+pub fn document_boundary_from_json(json: String) -> Result<DocumentBoundary, String> {
+    serde_json::from_str::<xberg::DocumentBoundary>(&json)
+        .map(DocumentBoundary)
+        .map_err(|e| e.to_string())
+}
+pub fn multidoc_thresholds_from_json(json: String) -> Result<MultidocThresholds, String> {
+    serde_json::from_str::<xberg::MultidocThresholds>(&json)
+        .map(MultidocThresholds)
+        .map_err(|e| e.to_string())
+}
+pub fn resolved_preset_from_json(json: String) -> Result<ResolvedPreset, String> {
+    serde_json::from_str::<xberg::ResolvedPreset>(&json)
+        .map(ResolvedPreset)
+        .map_err(|e| e.to_string())
+}
+pub fn model_paths_from_json(json: String) -> Result<ModelPaths, String> {
+    serde_json::from_str::<xberg::ModelPaths>(&json)
+        .map(ModelPaths)
+        .map_err(|e| e.to_string())
+}
+pub fn orientation_result_from_json(json: String) -> Result<OrientationResult, String> {
+    serde_json::from_str::<xberg::OrientationResult>(&json)
+        .map(OrientationResult)
+        .map_err(|e| e.to_string())
+}
+pub fn recognized_table_from_json(json: String) -> Result<RecognizedTable, String> {
+    serde_json::from_str::<xberg::RecognizedTable>(&json)
+        .map(RecognizedTable)
+        .map_err(|e| e.to_string())
+}
+pub fn detection_result_from_json(json: String) -> Result<DetectionResult, String> {
+    serde_json::from_str::<xberg::DetectionResult>(&json)
+        .map(DetectionResult)
+        .map_err(|e| e.to_string())
+}
+pub fn embedded_file_from_json(json: String) -> Result<EmbeddedFile, String> {
+    serde_json::from_str::<xberg::pdf::embedded_files::EmbeddedFile>(&json)
+        .map(EmbeddedFile)
+        .map_err(|e| e.to_string())
+}
+pub fn pdf_metadata_from_json(json: String) -> Result<PdfMetadata, String> {
+    serde_json::from_str::<xberg::pdf::metadata::PdfMetadata>(&json)
+        .map(PdfMetadata)
         .map_err(|e| e.to_string())
 }
 pub fn execution_provider_type_from_json(json: String) -> Result<ExecutionProviderType, String> {
