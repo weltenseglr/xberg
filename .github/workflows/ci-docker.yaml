@@ -35,7 +35,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [core, full, cli]
+        include:
+          - { variant: core, dockerfile: "docker/Dockerfile", target: core }
+          - { variant: full, dockerfile: "docker/Dockerfile", target: full }
+          - { variant: omni, dockerfile: "docker/Dockerfile", target: omni }
+          - { variant: cli, dockerfile: "docker/Dockerfile.cli", target: "" }
     steps:
       - uses: actions/checkout@v6
         with:
@@ -78,7 +82,8 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          file: docker/Dockerfile.${{ matrix.variant }}
+          file: ${{ matrix.dockerfile }}
+          target: ${{ matrix.target }}
           push: false
           load: true
           tags: xberg:${{ matrix.variant }}

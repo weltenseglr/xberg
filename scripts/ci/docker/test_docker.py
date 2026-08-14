@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unified Docker image test script for all variants (core, full, cli)."""
+"""Unified Docker image test script for all variants (core, full, omni, cli)."""
 
 from __future__ import annotations
 
@@ -476,7 +476,7 @@ def test_api_health(t: TestRunner) -> None:
         ext_count = int(ext_m.group(1)) if ext_m else 0
         t.debug(f"OCR backends: {ocr_count}, Extractors: {ext_count}")
 
-        if t.variant == "full":
+        if t.variant in ("full", "omni"):
             if ocr_count > 0:
                 t.info(f"Full variant: {ocr_count} OCR backend(s) registered")
                 t.pass_test()
@@ -971,7 +971,7 @@ def run_core_full_tests(t: TestRunner) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Docker image tests")
     parser.add_argument("--image", required=True, help="Docker image name")
-    parser.add_argument("--variant", required=True, choices=["core", "full", "cli"])
+    parser.add_argument("--variant", required=True, choices=["core", "full", "omni", "cli"])
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--skip-build", action="store_true", help="(ignored, kept for compat)")
     args = parser.parse_args()

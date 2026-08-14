@@ -183,6 +183,7 @@ all = [
     "summarization",
     "summarization-llm",
 ]
+transcription = ["xberg/transcription"]
 
 [dependencies]
 

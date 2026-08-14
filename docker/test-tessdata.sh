@@ -166,11 +166,7 @@ run_tests() {
 
 total_failed=0
 
-if ! run_tests "$SCRIPT_DIR/Dockerfile.core" "Dockerfile.core"; then
-  total_failed=$((total_failed + $?))
-fi
-
-if ! run_tests "$SCRIPT_DIR/Dockerfile.full" "Dockerfile.full"; then
+if ! run_tests "$SCRIPT_DIR/Dockerfile" "Dockerfile"; then
   total_failed=$((total_failed + $?))
 fi
 

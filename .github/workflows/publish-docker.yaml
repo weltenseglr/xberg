@@ -119,7 +119,9 @@ jobs:
     outputs:
       core_exists: ${{ steps.core.outputs.exists }}
       full_exists: ${{ steps.full.outputs.exists }}
+      omni_exists: ${{ steps.omni.outputs.exists }}
       cli_exists: ${{ steps.cli.outputs.exists }}
+      builder_exists: ${{ steps.builder.outputs.exists }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -154,6 +156,20 @@ jobs:
           SUMMARY_LABEL: cli
         run: scripts/publish/check-docker-tag.sh
 
+      - name: Check omni image tag
+        id: omni
+        env:
+          DOCKER_TAG: ghcr.io/xberg-io/xberg:${{ needs.prepare.outputs.version }}-omni
+          SUMMARY_LABEL: omni
+        run: scripts/publish/check-docker-tag.sh
+
+      - name: Check builder image tag
+        id: builder
+        env:
+          DOCKER_TAG: ghcr.io/xberg-io/xberg:${{ needs.prepare.outputs.version }}-builder
+          SUMMARY_LABEL: builder
+        run: scripts/publish/check-docker-tag.sh
+
   build-docker:
     name: Build ${{ matrix.variant }} (${{ matrix.platform.name }})
     needs:
@@ -170,14 +186,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [core, full, cli]
+        variant: [core, full, omni, cli, builder]
         platform:
           - { name: amd64, docker: linux/amd64, runner: ubuntu-latest }
           - { name: arm64, docker: linux/arm64, runner: ubuntu-24.04-arm }
         include:
-          - { variant: core, dockerfile: docker/Dockerfile.core, image: ghcr.io/xberg-io/xberg, tag_suffix: "-core" }
-          - { variant: full, dockerfile: docker/Dockerfile.full, image: ghcr.io/xberg-io/xberg, tag_suffix: "" }
-          - { variant: cli, dockerfile: docker/Dockerfile.cli, image: ghcr.io/xberg-io/xberg-cli, tag_suffix: "" }
+          - { variant: core, dockerfile: "docker/Dockerfile", target: core, image: ghcr.io/xberg-io/xberg, tag_suffix: "-core" }
+          - { variant: full, dockerfile: "docker/Dockerfile", target: full, image: ghcr.io/xberg-io/xberg, tag_suffix: "" }
+          - { variant: omni, dockerfile: "docker/Dockerfile", target: omni, image: ghcr.io/xberg-io/xberg, tag_suffix: "-omni" }
+          - { variant: cli, dockerfile: "docker/Dockerfile.cli", target: "", image: ghcr.io/xberg-io/xberg-cli, tag_suffix: "" }
+          - { variant: builder, dockerfile: "docker/Dockerfile", target: builder, image: ghcr.io/xberg-io/xberg, tag_suffix: "-builder" }
     if: ${{ needs.prepare.outputs.release_docker == 'true' }}
     steps:
       - name: Checkout
@@ -212,7 +230,9 @@ jobs:
           VARIANT: ${{ matrix.variant }}
           CORE_EXISTS: ${{ needs.check-docker.outputs.core_exists }}
           FULL_EXISTS: ${{ needs.check-docker.outputs.full_exists }}
+          OMNI_EXISTS: ${{ needs.check-docker.outputs.omni_exists }}
           CLI_EXISTS: ${{ needs.check-docker.outputs.cli_exists }}
+          BUILDER_EXISTS: ${{ needs.check-docker.outputs.builder_exists }}
         run: |
           go=false
           if [ "$FORCE" = "true" ]; then
@@ -221,7 +241,9 @@ jobs:
             case "$VARIANT" in
               core) if [ "$CORE_EXISTS" != "true" ]; then go=true; fi ;;
               full) if [ "$FULL_EXISTS" != "true" ]; then go=true; fi ;;
+              omni) if [ "$OMNI_EXISTS" != "true" ]; then go=true; fi ;;
               cli)  if [ "$CLI_EXISTS"  != "true" ]; then go=true; fi ;;
+              builder) if [ "$BUILDER_EXISTS" != "true" ]; then go=true; fi ;;
             esac
           fi
           echo "go=$go" >> "$GITHUB_OUTPUT"
@@ -234,11 +256,14 @@ jobs:
         uses: docker/setup-buildx-action@v4
 
       - name: Build test image
-        if: ${{ steps.gate.outputs.go == 'true' }}
-        run: docker build -f ${{ matrix.dockerfile }} --platform ${{ matrix.platform.docker }} --build-arg ONNXRUNTIME_VERSION=${{ env.ORT_VERSION }} -t xberg-publish:${{ matrix.variant }}-test .
+        if: ${{ steps.gate.outputs.go == 'true' && matrix.variant != 'builder' }}
+        run: |
+          TARGET_ARG=""
+          if [ -n "${{ matrix.target }}" ]; then TARGET_ARG="--target ${{ matrix.target }}"; fi
+          docker build $TARGET_ARG -f ${{ matrix.dockerfile }} --platform ${{ matrix.platform.docker }} --build-arg ONNXRUNTIME_VERSION=${{ env.ORT_VERSION }} -t xberg-publish:${{ matrix.variant }}-test .
 
       - name: Run Docker tests
-        if: ${{ steps.gate.outputs.go == 'true' }}
+        if: ${{ steps.gate.outputs.go == 'true' && matrix.variant != 'builder' }}
         run: python3 scripts/ci/docker/test_docker.py --image xberg-publish:${{ matrix.variant }}-test --variant ${{ matrix.variant }} --verbose
 
       - name: Log in to GitHub Container Registry
@@ -256,6 +281,7 @@ jobs:
         with:
           context: .
           file: ${{ matrix.dockerfile }}
+          target: ${{ matrix.target }}
           platforms: ${{ matrix.platform.docker }}
           build-args: |
             ONNXRUNTIME_VERSION=${{ env.ORT_VERSION }}
@@ -320,7 +346,9 @@ jobs:
         include:
           - { variant: core, image: ghcr.io/xberg-io/xberg, tag_suffix: "-core", extra_tag: "core" }
           - { variant: full, image: ghcr.io/xberg-io/xberg, tag_suffix: "", extra_tag: "latest" }
+          - { variant: omni, image: ghcr.io/xberg-io/xberg, tag_suffix: "-omni", extra_tag: "omni" }
           - { variant: cli, image: ghcr.io/xberg-io/xberg-cli, tag_suffix: "", extra_tag: "latest" }
+          - { variant: builder, image: ghcr.io/xberg-io/xberg, tag_suffix: "-builder", extra_tag: "builder" }
     steps:
       - name: Decide whether to publish
         id: gate
@@ -329,7 +357,9 @@ jobs:
           VARIANT: ${{ matrix.variant }}
           CORE_EXISTS: ${{ needs.check-docker.outputs.core_exists }}
           FULL_EXISTS: ${{ needs.check-docker.outputs.full_exists }}
+          OMNI_EXISTS: ${{ needs.check-docker.outputs.omni_exists }}
           CLI_EXISTS: ${{ needs.check-docker.outputs.cli_exists }}
+          BUILDER_EXISTS: ${{ needs.check-docker.outputs.builder_exists }}
         run: |
           go=false
           if [ "$FORCE" = "true" ]; then
@@ -338,7 +368,9 @@ jobs:
             case "$VARIANT" in
               core) if [ "$CORE_EXISTS" != "true" ]; then go=true; fi ;;
               full) if [ "$FULL_EXISTS" != "true" ]; then go=true; fi ;;
+              omni) if [ "$OMNI_EXISTS" != "true" ]; then go=true; fi ;;
               cli)  if [ "$CLI_EXISTS"  != "true" ]; then go=true; fi ;;
+              builder) if [ "$BUILDER_EXISTS" != "true" ]; then go=true; fi ;;
             esac
           fi
           echo "go=$go" >> "$GITHUB_OUTPUT"

@@ -1,71 +1,70 @@
 # Xberg Docker Images
 
-This directory contains Dockerfile variants for building Xberg Docker images with different feature sets.
-
-## Base Image
-
-Both variants use **Debian 13 (Trixie) slim** - the latest stable Debian release for optimal package availability and security updates.
+This directory contains a single consolidated multi-stage `Dockerfile` for building Xberg Docker images with different feature sets. All runtime variants share one compiled binary and differ only in the runtime packages and model cache they bundle.
 
 ## Image Variants
 
-### 1. Core Image (`Dockerfile.core`)
+| Image            | Description                                    | Base                | Size       |
+| ---------------- | ---------------------------------------------- | ------------------- | ---------- |
+| `xberg:builder`  | Build environment with all dev dependencies    | rust:1.95-trixie    | ~3-4GB     |
+| `xberg:core`     | Minimal runtime, no cache warm                 | debian:trixie-slim  | ~1.0-1.3GB |
+| `xberg:full`     | Full runtime + pre-warmed model cache          | debian:trixie-slim  | ~1.0-1.3GB |
+| `xberg:omni`     | Full + transcription (audio/video)             | debian:trixie-slim  | ~1.0-1.3GB |
 
-**Size:** ~1.0-1.3GB
-**Base:** debian:trixie-slim
-**Features:** PDF, DOCX, PPTX, images, HTML, XML, text, Excel, email, academic formats (LaTeX, EPUB, etc.)
-**OCR:** Tesseract (12 languages)
-**Legacy Office:** Native OLE/CFB parsing support
+> **Note:** `xberg:cli` is a separate Alpine-based image built from `Dockerfile.cli` (musl static binary) and is not part of the multi-stage build.
 
-**When to use:**
+## Base Image
 
-- Production deployments where image size matters
-- Cloud environments with size/bandwidth constraints
-- Kubernetes deployments with frequent pod scaling
-- All use cases (both images have equivalent legacy Office support)
+Runtime images use **Debian 13 (Trixie) slim** - the latest stable Debian release for optimal package availability and security updates. The builder stage uses `rust:1.95-trixie`.
 
-**Build command:**
+## Stage Hierarchy
 
-```bash
-docker build -f docker/Dockerfile.core -t xberg:core .
+```
+builder (rust:1.95-trixie, all dev deps, libheif, ONNX, source)
+├── build-binary (--features all) ──┬── core (runtime-base + minimal apt)
+│                                   └── full (runtime-base + fontconfig/libssl3 + cache warm)
+└── build-omni (--features all,transcription) └── omni (runtime-base + fontconfig/libssl3 + cache warm)
+
+runtime-base (debian:trixie-slim, tesseract 12 langs, codec libs, user setup)
 ```
 
-### 2. Full Image (`Dockerfile.full`)
+## Build Commands
 
-**Size:** ~1.0-1.3GB
-**Base:** debian:trixie-slim
-**Features:** All core features with native legacy Office format support
-**OCR:** Tesseract (12 languages)
-**Legacy Office:** Native OLE/CFB parsing for .doc, .ppt, .xls
-
-**When to use:**
-
-- Complete document intelligence pipeline with all optional dependencies
-- Development and testing environments
-- When you want maximum feature completeness
-
-**Build command:**
+Build individual targets from the consolidated `docker/Dockerfile`:
 
 ```bash
-docker build -f docker/Dockerfile.full -t xberg:full .
+# Individual targets
+docker buildx build --target builder -f docker/Dockerfile -t xberg:builder .
+docker buildx build --target core -f docker/Dockerfile -t xberg:core .
+docker buildx build --target full -f docker/Dockerfile -t xberg:full .
+docker buildx build --target omni -f docker/Dockerfile -t xberg:omni .
+
+# Or use the build script
+./docker/build.sh [builder|core|full|omni|all]
 ```
+
+The build script (`docker/build.sh`) sets `CARGO_BUILD_JOBS` automatically and builds `builder` first so subsequent targets hit the layer cache.
+
+## Key Design Decisions
+
+- **Core and Full share ONE compiled binary** (`--features all`) - they differ only in runtime packages
+- **Omni compiles separately** with `--features all,transcription`
+- **Core runtime** gains `libx264-164` + `libopenh264-8` (the binary links them from the shared builder)
+- **Full/Omni** add `fontconfig` + `libssl3` + a pre-warmed model cache
 
 ## Size Comparison
 
-| Component            | Core           | Full           | Difference        |
-| -------------------- | -------------- | -------------- | ----------------- |
-| Base (trixie-slim)   | ~120MB         | ~120MB         | -                 |
-| Tesseract + 12 langs | ~250MB         | ~250MB         | -                 |
-| Rust binary          | ~80MB          | ~80MB          | -                 |
-| System libraries     | ~100MB         | ~100MB         | -                 |
-| **Total (approx)**   | **~1.0-1.3GB** | **~1.0-1.3GB** | **- (same size)** |
-
-## Default Image
-
-The root `Dockerfile` is a symlink to `Dockerfile.full` for backward compatibility and complete feature support by default.
+| Component            | Core           | Full           | Omni          | Difference        |
+| -------------------- | -------------- | -------------- | ------------- | ----------------- |
+| Base (trixie-slim)   | ~120MB         | ~120MB         | ~120MB        | -                 |
+| Tesseract + 12 langs | ~250MB         | ~250MB         | ~250MB        | -                 |
+| Rust binary          | ~80MB          | ~80MB          | ~80MB         | - (same binary)  |
+| System libraries     | ~100MB         | ~100MB         | ~100MB        | -                 |
+| **Total (approx)**   | **~1.0-1.3GB** | **~1.0-1.3GB** | **~1.0-1.3GB** | **- (same size)** |
 
 ## Multi-Architecture Support
 
-Both images support:
+All images support:
 
 - `linux/amd64` (x86_64)
 - `linux/arm64` (aarch64)
@@ -100,7 +99,7 @@ docker run xberg:core mcp
 
 ## Testing
 
-Test scripts are provided to verify both image variants:
+Test scripts are provided to verify image variants:
 
 ```bash
 # Test core image
@@ -112,12 +111,13 @@ IMAGE_NAME=xberg:full ./scripts/test_docker.sh
 
 ## GitHub Actions
 
-The `.github/workflows/publish-docker.yaml` workflow builds and publishes both variants to GitHub Container Registry:
+The `.github/workflows/publish-docker.yaml` workflow builds and publishes all variants to GitHub Container Registry:
 
-- `ghcr.io/xberg-io/xberg:VERSION-core` - Core image (minimal runtime)
-- `ghcr.io/xberg-io/xberg:core` - Latest core image
-- `ghcr.io/xberg-io/xberg:VERSION` - Full image (all optional dependencies)
-- `ghcr.io/xberg-io/xberg:latest` - Latest full image
+- `ghcr.io/xberg-io/xberg:VERSION-core` — Core image (minimal runtime)
+- `ghcr.io/xberg-io/xberg:VERSION` — Full image (also published as `:latest`)
+- `ghcr.io/xberg-io/xberg:VERSION-omni` — Omni image (with transcription)
+- `ghcr.io/xberg-io/xberg:VERSION-builder` — Builder image (build environment)
+- `ghcr.io/xberg-io/xberg-cli:VERSION` — CLI image (separate Alpine/musl build)
 
 For local development, use the local tags shown in the build commands above.
 
@@ -133,5 +133,15 @@ For local development, use the local tags shown in the build commands above.
 **Choose Full if:**
 
 - ✅ Want maximum optional dependencies preinstalled
+- ✅ Pre-warmed model cache for fast first use
 - ✅ Development and testing environments
 - ✅ "Batteries included" experience preferred
+
+**Choose Omni if:**
+
+- ✅ Need audio/video transcription (MP3, M4A, WAV, WebM, MP4) in addition to full document intelligence
+- ✅ Single image covering both extraction and transcription workloads
+
+**Choose Builder if:**
+
+- ✅ Need a pre-built environment with all development dependencies (libheif, ONNX, Rust toolchain) to compile or test Xberg from source

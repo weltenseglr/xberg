@@ -17,7 +17,7 @@ mapfile -t members < <(grep -oE '"crates/[a-zA-Z0-9_-]+"' Cargo.toml | tr -d '"'
 
 status=0
 
-for dockerfile in docker/Dockerfile.*; do
+for dockerfile in docker/Dockerfile*; do
     [ -f "$dockerfile" ] || continue
 
     for crate in "${members[@]}"; do
